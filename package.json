@@ -1,0 +1,41 @@
+{
+  "name": "goldenston",
+  "version": "1.0.0",
+  "description": "Prerequisite\r Must have basic knowledge of Node, React, Express, MongoDB . I have made tutorial on each technology on YouTube , \r make sure to check it out. Links are Below respectively\r Node - https://youtu.be/BSO9C8Z-YV8\r React - https://youtu.be/99kgUCIMboY\r Express - https://youtu.be/teipbke8c4A\\\r MongoDB - https://youtu.be/AYDP1S5BbTo\r RestApi - https://youtu.be/AhCSfuG9Jxw (optional)\r Install Dependencies",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon backend/server.js"
+  },
+  "author": "Lord_hiren",
+  "license": "ISC",
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-brands-svg-icons": "^6.5.2",
+    "@fortawesome/free-regular-svg-icons": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cloudinary": "^2.2.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-fileupload": "^1.5.0",
+    "force": "^0.0.3",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.6.2",
+    "mongoose": "^8.4.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.13",
+    "nodemon": "^3.1.0",
+    "paytmchecksum": "^1.5.1",
+    "razorpay": "^2.9.4",
+    "request": "^2.88.2",
+    "sharp": "^0.33.4",
+    "stripe": "^15.7.0",
+    "uuid": "^9.0.1",
+    "validator": "^13.12.0"
+  }
+}
