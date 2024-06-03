@@ -6,6 +6,9 @@ import Home from "./pages/Home";
 import Nav from "./components/Nav";
 import Error from "./pages/Error";
 import Admin from "./pages/admin/Admin";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminProducts from "./pages/admin/AdminProducts";
+import AddNewProducts from "./pages/admin/AddNewProducts";
 
 function App() {
   return (
@@ -15,6 +18,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/v1/admin/dashbord" element={<Admin />} />
+          <Route path="/v1/admin/users" element={<AdminUsers />} />
+          <Route path="/v1/admin/products" element={<AdminProducts />} />
+          <Route path="/v1/admin/add/products" element={<AddNewProducts />} />
 
           <Route path="*" element={<Error />} />
         </Routes>

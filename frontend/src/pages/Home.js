@@ -1,6 +1,7 @@
 import React from "react";
 import Metadata from "../components/Metadata";
 import { useGoogleOneTapLogin } from "@react-oauth/google";
+import { toast } from "react-toastify";
 
 const Home = () => {
   useGoogleOneTapLogin({
@@ -15,6 +16,10 @@ const Home = () => {
   // fatching data
   const fatchUser = (creRes) => {
     console.log(creRes);
+  };
+  const onhandelclick = (e) => {
+    e.preventDefault();
+    toast.success("hello world");
   };
 
   return (

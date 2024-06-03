@@ -23,6 +23,8 @@ import {
 } from "../actions/userAction";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode"; // Corrected import statement
+import { toast } from "react-toastify";
+import { LOGOUT_SUCCESS } from "../constants/userConstants";
 
 const pages = [
   { title: "Home", dest: "/" },
@@ -91,6 +93,7 @@ const Nav = () => {
         break;
       case "Logout":
         removeCookie("token");
+        dispatch({ type: LOGOUT_SUCCESS });
         break;
       default:
         break;
@@ -100,16 +103,15 @@ const Nav = () => {
 
   useEffect(() => {
     if (error) {
+      toast.error(error);
       dispatch(clearErrors());
     }
   }, [dispatch, error]);
 
   useEffect(() => {
-    console.log("user", user);
     if (user && user[0] === undefined && token !== undefined) {
       try {
         const decoded = jwtDecode(token);
-        console.log(decoded);
         dispatch(loadUser(decoded.id));
       } catch (error) {
         console.error("Error decoding token:", error);

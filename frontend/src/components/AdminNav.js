@@ -27,13 +27,13 @@ const AdminNav = () => {
     <div className="col-3 pt-5">
       <div className="row g-3">
         <div className="col-12">
-          <div className="">
+          <div className="text-center">
             <Avatar
-              alt={user.name} // Assuming user object has a name property
-              src={user.avatar?.url} // Optional chaining in case avatar is undefined
-              className="adminprofile"
+              alt={user.name}
+              src={user.avatar?.url}
+              className="adminprofile mx-auto"
             />
-            <h4 className="pt-3">Hello, {user.name}</h4>
+            <h4 className="pt-3 m-0">Hello, {user.name}</h4>
             <p className="p">{user.email}</p>
           </div>
         </div>

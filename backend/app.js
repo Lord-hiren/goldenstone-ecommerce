@@ -18,6 +18,8 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload());
+app.use("/images", express.static(path.join(__dirname, "../images")));
+
 // Allow only requests from http://localhost:3000
 app.use(cors({
     origin: 'http://localhost:3000',
