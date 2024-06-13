@@ -28,6 +28,12 @@ CLOUDINARY_API_KEY ,
 CLOUDINARY_API_SECRET ,
 fill each filed with your info respectively .
 
+#### Essential Variables for frontend
+
+1) cd frontend
+2) create .env file
+3) REACT_APP_API= , REACT_APP_GOOGLE_CLINT_ID=
+
 Author
 Instagram Click Here @hiren_hadiya_509
 
