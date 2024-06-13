@@ -9,6 +9,7 @@ import Admin from "./pages/admin/Admin";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminProducts from "./pages/admin/AdminProducts";
 import AddNewProducts from "./pages/admin/AddNewProducts";
+import AdminEditproduct from "./pages/admin/AdminEditproduct";
 
 function App() {
   return (
@@ -21,6 +22,11 @@ function App() {
           <Route path="/v1/admin/users" element={<AdminUsers />} />
           <Route path="/v1/admin/products" element={<AdminProducts />} />
           <Route path="/v1/admin/add/products" element={<AddNewProducts />} />
+          <Route
+            path="/v1/admin/edit/products/:id"
+            element={<AdminEditproduct />}
+          />
+          {/* <Route path="/v1/admin/orders" element={<Adminorders />} /> */}
 
           <Route path="*" element={<Error />} />
         </Routes>

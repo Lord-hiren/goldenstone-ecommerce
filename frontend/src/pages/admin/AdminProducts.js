@@ -7,9 +7,11 @@ import { useNavigate } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { getAdminProduct } from "../../actions/productActions";
+import { clearErrors, deleteProduct, getAdminProduct } from "../../actions/productActions";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
+import { toast } from "react-toastify";
+import { DELETE_PRODUCT_RESET } from "../../constants/productConstants";
 
 const AdminProducts = () => {
   const dispatch = useDispatch();
@@ -17,8 +19,9 @@ const AdminProducts = () => {
 
   const { loading, isAuthenticated } = useSelector((state) => state.user);
   const { error, products } = useSelector((state) => state.products);
-
-  console.log(products);
+  const { error: deleteError, isDeleted } = useSelector(
+    (state) => state.product
+  );
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -26,15 +29,25 @@ const AdminProducts = () => {
     } else {
       dispatch(getAdminProduct());
     }
-  }, [dispatch, isAuthenticated, navigate]);
+    if (deleteError) {
+      toast.error(deleteError);
+      dispatch(clearErrors());
+    }
+
+    if (isDeleted) {
+      toast.success("product deleted");
+      dispatch(getAdminProduct());
+      dispatch({ type: DELETE_PRODUCT_RESET });
+    }
+  }, [dispatch, isDeleted, isDeleted, isAuthenticated, navigate]);
 
   const handleDelete = (id) => {
     console.log("Delete product with ID:", id);
-    // Dispatch an action to delete the product
+    dispatch(deleteProduct(id));
   };
 
   const handleEdit = (id) => {
-    navigate(`/v1/admin/product/edit/${id}`);
+    navigate(`/v1/admin/edit/products/${id}`);
   };
 
   const columns = [

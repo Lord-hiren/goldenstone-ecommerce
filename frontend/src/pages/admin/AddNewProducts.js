@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { clearErrors, createProduct } from "../../actions/productActions";
 import { toast } from "react-toastify";
 import { NEW_PRODUCT_RESET } from "../../constants/productConstants";
+import AdminNav from "../../components/AdminNav";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const AddNewProducts = () => {
   const dispatch = useDispatch();
@@ -27,16 +29,22 @@ const AddNewProducts = () => {
     formData.append("price", price);
     formData.append("category", category);
     formData.append("stock", stock);
-    for (let i = 0; i < images.length; i++) {
-      formData.append("images", images[i]);
-    }
+    images.forEach((image) => {
+      formData.append("images", image);
+    });
 
     dispatch(createProduct(formData));
-    console.log([...formData]);
   };
 
   const handleImageChange = (e) => {
-    setImages([...e.target.files]);
+    const files = Array.from(e.target.files);
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImages((prevFiles) => [...prevFiles, reader.result]);
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   useEffect(() => {
@@ -46,7 +54,7 @@ const AddNewProducts = () => {
     }
 
     if (success) {
-      toast.success("Product added successfuly");
+      toast.success("Product added successfully");
       dispatch({ type: NEW_PRODUCT_RESET });
       navigate(-1);
     }
@@ -56,77 +64,89 @@ const AddNewProducts = () => {
     <>
       <div className="container">
         <div className="row">
-          <div className="col-lg-5 col-12 mx-auto pt-5">
-            <form
-              className="mt-4"
-              onSubmit={handleSubmit}
-              encType="multipart/form-data"
-            >
-              <input
-                type="text"
-                className="input"
-                placeholder="Name"
-                name="name"
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-              <input
-                type="text"
-                className="input"
-                placeholder="Description"
-                name="description"
-                onChange={(e) => setDescription(e.target.value)}
-                required
-              />
-              <input
-                type="text"
-                className="input"
-                placeholder="Price"
-                name="price"
-                onChange={(e) => setPrice(e.target.value)}
-                required
-              />
-              <input
-                type="text"
-                className="input"
-                placeholder="Category"
-                name="category"
-                onChange={(e) => setCategory(e.target.value)}
-                required
-              />
-              <input
-                type="text"
-                className="input"
-                placeholder="Stock"
-                name="stock"
-                onChange={(e) => setStock(e.target.value)}
-                required
-              />
-              <input type="file" multiple onChange={handleImageChange} />
+          <AdminNav />
+          <div className="col-9 py-5">
+            <div className="row">
+              <div className="col-lg-8 col-12 mx-auto pt-5">
+                <Button onClick={() => navigate("/v1/admin/products")}>
+                  <ArrowBackIcon />
+                </Button>
+                <form
+                  className="mt-4"
+                  onSubmit={handleSubmit}
+                  enctype="multipart/form-data"
+                >
+                  <input
+                    type="text"
+                    className="input"
+                    placeholder="Name"
+                    name="name"
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                  <input
+                    type="text"
+                    className="input"
+                    placeholder="Description"
+                    name="description"
+                    onChange={(e) => setDescription(e.target.value)}
+                    required
+                  />
+                  <input
+                    type="text"
+                    className="input"
+                    placeholder="Price"
+                    name="price"
+                    onChange={(e) => setPrice(e.target.value)}
+                    required
+                  />
+                  <input
+                    type="text"
+                    className="input"
+                    placeholder="Category"
+                    name="category"
+                    onChange={(e) => setCategory(e.target.value)}
+                    required
+                  />
+                  <input
+                    type="text"
+                    className="input"
+                    placeholder="Stock"
+                    name="stock"
+                    onChange={(e) => setStock(e.target.value)}
+                    required
+                  />
+                  <input
+                    type="file"
+                    onChange={handleImageChange}
+                    multiple="multiple"
+                  />
 
-              {loading === true ? (
-                <>
-                  <Button
-                    variant="contained"
-                    className="btn-lg-main"
-                    type="submit"
-                    disabled
-                  >
-                    Submit
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button
-                    variant="contained"
-                    className="btn-lg-main"
-                    type="submit"
-                  >
-                    Submit
-                  </Button>
-                </>
-              )}
-            </form>
+                  {loading === true ? (
+                    <>
+                      <Button
+                        variant="contained"
+                        className="btn-lg-main"
+                        type="submit"
+                        disabled
+                      >
+                        Submit
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        variant="contained"
+                        className="btn-lg-main"
+                        type="submit"
+                      >
+                        Submit
+                      </Button>
+                    </>
+                  )}
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       </div>

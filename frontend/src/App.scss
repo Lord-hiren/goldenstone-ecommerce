@@ -8,6 +8,9 @@ $fontmulish: "Mulish", sans-serif;
 $black: #000;
 $gold: #ffd700;
 $white: #fff;
+$bg: #313942;
+$ghost: #528cce;
+$heading: #e7ebf2;
 
 * {
   padding: 0;
@@ -65,10 +68,6 @@ $white: #fff;
     cursor: not-allowed;
   }
 }
-
-$bg: #313942;
-$ghost: #528cce;
-$heading: #e7ebf2;
 
 *,
 *:after,
@@ -207,12 +206,14 @@ $heading: #e7ebf2;
   outline: none;
   background-color: white;
   transition: all 0.3s ease-in-out;
+  color: gray;
 
   &:focus,
   &:active {
     border-bottom: 1px solid black;
     background-color: rgb(236, 236, 236);
     box-shadow: 1px 1px 10px #53505085;
+    color: $black;
   }
 
   &::placeholder {
@@ -232,4 +233,10 @@ $heading: #e7ebf2;
   &:hover {
     box-shadow: 1px 1px 15px #535050d0 !important;
   }
+}
+
+.privew-img {
+  width: 5rem !important;
+  padding: 1rem;
+  border-radius: 50%;
 }

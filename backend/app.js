@@ -13,12 +13,12 @@ if (process.env.NODE_ENV !== "PROODUCTION") {
     require("dotenv").config({ path: "backend/config/config.env" });
 }
 
-app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload());
 app.use("/images", express.static(path.join(__dirname, "../images")));
+app.use(express.json({ limit: "20mb" }));
+app.use(express.urlencoded({ limit: "20mb", extended: true }));
 
 // Allow only requests from http://localhost:3000
 app.use(cors({
