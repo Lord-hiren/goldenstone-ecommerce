@@ -10,6 +10,9 @@ import AdminUsers from "./pages/admin/AdminUsers";
 import AdminProducts from "./pages/admin/AdminProducts";
 import AddNewProducts from "./pages/admin/AddNewProducts";
 import AdminEditproduct from "./pages/admin/AdminEditproduct";
+import Footer from "./components/Footer";
+import Products from "./pages/Products";
+import ProductDetail from "./pages/ProductDetail";
 
 function App() {
   return (
@@ -18,6 +21,9 @@ function App() {
         <Nav />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/product/detail/:id" element={<ProductDetail />} />
+
           <Route path="/v1/admin/dashbord" element={<Admin />} />
           <Route path="/v1/admin/users" element={<AdminUsers />} />
           <Route path="/v1/admin/products" element={<AdminProducts />} />
@@ -30,6 +36,7 @@ function App() {
 
           <Route path="*" element={<Error />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </>
   );

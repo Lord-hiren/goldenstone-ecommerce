@@ -6,17 +6,29 @@ $fontmulish: "Mulish", sans-serif;
 
 // color
 $black: #000;
-$gold: #ffd700;
+$gold: #832729;
+$lightGold: #f5eeee;
+$semiGold:#efe3e3;
 $white: #fff;
 $bg: #313942;
 $ghost: #528cce;
 $heading: #e7ebf2;
+$main-bg: #f8f7f6;
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
   font-family: $fontmulish;
+}
+
+.font-2 {
+  font-family: "Montserrat" !important;
+}
+
+.main-bg {
+  background-color: $main-bg !important;
+  min-height: 88vh;
 }
 
 .black {
@@ -35,6 +47,16 @@ $heading: #e7ebf2;
   color: $gold !important;
 }
 
+.white-card {
+  background-color: $white;
+  border-radius: 2rem;
+  padding: 1.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.fs-xs {
+  font-size: 0.8rem !important;
+}
 // all styles
 
 .login-with-google-btn {
@@ -239,4 +261,115 @@ $heading: #e7ebf2;
   width: 5rem !important;
   padding: 1rem;
   border-radius: 50%;
+}
+
+.thumbnale {
+  width: 5rem !important;
+  height: 5rem;
+  border: 1px solid $gold;
+  border-radius: 50%;
+  object-fit: cover;
+  padding: 0.1rem;
+}
+
+.header-img {
+  width: 100%;
+  max-width: 100%;
+  height: 500px;
+  object-fit: cover;
+}
+
+.tranding-product-box {
+  width: 100%;
+  height: 20rem;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+
+  & > .tranding-product {
+    width: 100%;
+    max-width: 100%;
+    object-fit: cover;
+    aspect-ratio: 4/5 !important;
+    transition: all 0.3s ease-in-out;
+  }
+
+  &:hover > .tranding-product {
+    aspect-ratio: 1/1 !important;
+    padding: 3rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .tranding-product-box {
+    width: 100%;
+    height: 10rem;
+    overflow: hidden;
+    transition: all 0.5s ease-in-out;
+
+    &:hover > .tranding-product {
+      aspect-ratio: 1/1 !important;
+    }
+  }
+}
+
+@media (max-width: 575.98px) {
+  .tranding-product-box {
+    width: 100%;
+    height: 8rem;
+    overflow: hidden;
+    transition: all 0.5s ease-in-out;
+
+    &:hover > .tranding-product {
+      aspect-ratio: 2/2 !important;
+    }
+  }
+}
+
+.product-card {
+  background-color: #f8f8f8;
+  transition: all 0.3s ease-in-out;
+  border-radius: 10px;
+
+  &:hover {
+    background-color: $white;
+  }
+}
+
+.shadow {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15),
+    0 -0.01rem 0.3rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.border1 {
+  border: 1px solid black !important;
+}
+
+.select-quantity {
+  width: 100%;
+  height: auto;
+  display: flex;
+
+  & p {
+    padding: 1rem;
+  }
+
+  & .dic {
+    width: 10%;
+    text-align: center;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  & .num {
+    width: 10%;
+    text-align: center;
+    margin: 0;
+  }
+
+  & .inc {
+    width: 10%;
+    text-align: center;
+    margin: 0;
+    cursor: pointer;
+  }
 }

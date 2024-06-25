@@ -1,6 +1,7 @@
 const Product = require("../models/productModel");
 const ErrorHander = require("../utils/errorhander");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
+const ApiFeatures = require("../utils/apifeatures");
 
 // Create product
 exports.createProduct = catchAsyncErrors(async (req, res, next) => {
@@ -87,7 +88,16 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHander("Product not found", 404));
   }
 
-  const { name, description, price, category, stock, images } = req.body;
+  const {
+    name,
+    description,
+    price,
+    category,
+    stock,
+    images,
+    discount,
+    trending,
+  } = req.body;
 
   const updatedData = {
     name,
@@ -95,6 +105,8 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
     price,
     category,
     stock,
+    discount,
+    trending,
   };
 
   const normalizedImages = Array.isArray(images) ? images : [images];
@@ -105,6 +117,7 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
     }));
     updatedData.images = imagesLinks;
   }
+  console.log(updatedData);
 
   product = await Product.findByIdAndUpdate(req.params.id, updatedData, {
     new: true,

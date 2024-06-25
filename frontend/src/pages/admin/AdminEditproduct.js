@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, Switch } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -13,7 +13,7 @@ import { UPDATE_PRODUCT_RESET } from "../../constants/productConstants";
 import AdminNav from "../../components/AdminNav";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-const AdminEditproduct = () => {
+const AdminEditProduct = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const params = useParams();
@@ -34,6 +34,8 @@ const AdminEditproduct = () => {
   const [stock, setStock] = useState("");
   const [images, setImages] = useState([]);
   const [oldImages, setOldImages] = useState([]);
+  const [discount, setDiscount] = useState(0);
+  const [trending, setTrending] = useState(false);
 
   useEffect(() => {
     if (product && product._id !== id) {
@@ -45,6 +47,8 @@ const AdminEditproduct = () => {
       setCategory(product.category);
       setStock(product.stock);
       setOldImages(product.images);
+      setDiscount(product.discount);
+      setTrending(product.trending === "Y");
     }
   }, [product, dispatch, id]);
 
@@ -58,6 +62,8 @@ const AdminEditproduct = () => {
       category,
       stock,
       images,
+      discount,
+      trending: trending ? "Y" : "N",
     };
 
     dispatch(updateProduct(id, formData));
@@ -163,6 +169,18 @@ const AdminEditproduct = () => {
                     required
                   />{" "}
                   <br />
+                  <label htmlFor="discount">Discount: </label> <br />
+                  <input
+                    type="number"
+                    className="input"
+                    autoComplete="off"
+                    placeholder="Discount"
+                    name="discount"
+                    value={discount}
+                    onChange={(e) => setDiscount(e.target.value)}
+                    required
+                  />{" "}
+                  <br />
                   <label htmlFor="stock">Stock: </label> <br />
                   <input
                     type="text"
@@ -173,6 +191,15 @@ const AdminEditproduct = () => {
                     value={stock}
                     onChange={(e) => setStock(e.target.value)}
                     required
+                  />{" "}
+                  <br />
+                  <label htmlFor="trending">Trending: </label>
+                  <Switch
+                    checked={trending}
+                    onChange={(e) => setTrending(e.target.checked)}
+                    name="trending"
+                    color="primary"
+                    inputProps={{ "aria-label": "Trending" }}
                   />{" "}
                   <br />
                   <input type="file" multiple onChange={handleImageChange} />
@@ -221,4 +248,4 @@ const AdminEditproduct = () => {
   );
 };
 
-export default AdminEditproduct;
+export default AdminEditProduct;

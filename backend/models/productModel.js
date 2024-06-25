@@ -27,6 +27,15 @@ const productSchema = mongoose.Schema({
       },
     },
   ],
+  discount: {
+    type: Number,
+    max: [90, "Discount cannot exceed 90%"],
+    default: 0,
+  },
+  trending: {
+    type: String,
+    default: "N"
+  },
   category: {
     type: String,
     required: [true, "Please Enter Product Category"],
