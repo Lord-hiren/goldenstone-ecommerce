@@ -31,7 +31,7 @@ const pages = [
   { title: "Home", dest: "/" },
   { title: "Products", dest: "/products" },
 ];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Profile", "Cart", "Dashboard", "Logout"];
 
 const Nav = () => {
   const [cookies, , removeCookie] = useCookies(["token"]);
@@ -86,8 +86,8 @@ const Nav = () => {
       case "Profile":
         navigate("/profile");
         break;
-      case "Account":
-        navigate("/account");
+      case "Cart":
+        navigate("/cart");
         break;
       case "Dashboard":
         navigate("/dashboard");

@@ -117,7 +117,6 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
     }));
     updatedData.images = imagesLinks;
   }
-  console.log(updatedData);
 
   product = await Product.findByIdAndUpdate(req.params.id, updatedData, {
     new: true,

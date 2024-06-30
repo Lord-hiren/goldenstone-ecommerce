@@ -8,7 +8,7 @@ $fontmulish: "Mulish", sans-serif;
 $black: #000;
 $gold: #832729;
 $lightGold: #f5eeee;
-$semiGold:#efe3e3;
+$semiGold: #efe3e3;
 $white: #fff;
 $bg: #313942;
 $ghost: #528cce;
@@ -372,4 +372,21 @@ $main-bg: #f8f7f6;
     margin: 0;
     cursor: pointer;
   }
+}
+
+.btn-gold {
+  background-color: $lightGold !important;
+  color: $gold !important;
+
+
+  &:hover {
+    background-color: $gold !important;
+    color: $lightGold !important;
+  }
+}
+
+.cart-image {
+  width: 2.5rem;
+  max-width: 100%;
+  margin: 0 1.5rem;
 }

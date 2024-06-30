@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Metadata from "../components/Metadata";
 import { useGoogleOneTapLogin } from "@react-oauth/google";
 import { toast } from "react-toastify";
@@ -15,8 +15,11 @@ import hero1 from "../asetes/img/hero1.png";
 import hero2 from "../asetes/img/hero2.png";
 import hero3 from "../asetes/img/hero3.png";
 import Tproducts from "../components/Tproducts";
+import { useDispatch, useSelector } from "react-redux";
+import { clearErrors, getProduct } from "../actions/productActions";
 
 const Home = () => {
+  const dispatch = useDispatch();
   // useGoogleOneTapLogin({
   //   onSuccess: (credentialResponse) => {
   //     fatchUser(credentialResponse);
@@ -35,38 +38,17 @@ const Home = () => {
   //   toast.success("hello world");
   // };
 
-  const props = [
-    {
-      image: mring,
-      titel: "Best ting for man",
-      price: 2999,
-      value: 3,
-    },
-    {
-      image: meyrring,
-      titel: "Best ting for man",
-      price: 2999,
-      value: 3,
-    },
-    {
-      image: mnecklace,
-      titel: "Best ting for man",
-      price: 2999,
-      value: 3,
-    },
-    {
-      image: mbreslet,
-      titel: "Best ting for man",
-      price: 2999,
-      value: 3,
-    },
-    {
-      image: mring,
-      titel: "Best ting for man",
-      price: 2999,
-      value: 3,
-    },
-  ];
+  const { loading, error, products, productsCount, resultPerPage } =
+    useSelector((state) => state.products);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(clearErrors());
+    }
+    dispatch(getProduct());
+  }, [dispatch, error]);
+
 
   return (
     <>
@@ -201,8 +183,8 @@ const Home = () => {
               Trending now <ArrowRightAltIcon className="fs-1" />
             </h3>
             <div className="row g-3">
-              {props &&
-                props.map((val, ind) => <Tproducts key={ind} props={val} />)}
+              {products &&
+                products.map((val, ind) => <Tproducts key={ind} props={val} />)}
             </div>
           </div>
         </div>

@@ -13,6 +13,7 @@ import AdminEditproduct from "./pages/admin/AdminEditproduct";
 import Footer from "./components/Footer";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
+import Cart from "./pages/Cart";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/product/detail/:id" element={<ProductDetail />} />
+          <Route path="/cart" element={<Cart />} />
 
           <Route path="/v1/admin/dashbord" element={<Admin />} />
           <Route path="/v1/admin/users" element={<AdminUsers />} />

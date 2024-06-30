@@ -14,11 +14,20 @@ const ProductsCard = ({ props }) => {
           <img src={props.images[0].url} class="img-fluid rounded-2" alt="" />
           <div class="card-body">
             <h5 class="card-title font-2">{props.name}</h5>
-            <p class="card-text fw-bold fs-4 m-0">
-              ₹{props.price}/-{" "}
-              <span className="fs-6 text-secondary text-decoration-line-through">
-                ₹3500
-              </span>
+            <p class="card-text text-gold fw-bold fs-4 m-0">
+              {props.discount === 0 ? (
+                <> ₹{props.price}</>
+              ) : (
+                <>
+                  ₹
+                  {props.price -
+                    Math.ceil((props.price * props.discount) / 100)}
+                  /-{" "}
+                  <span className="fs-6 text-secondary text-decoration-line-through">
+                    ₹{props.price}
+                  </span>
+                </>
+              )}
             </p>
             <div>
               <Rating

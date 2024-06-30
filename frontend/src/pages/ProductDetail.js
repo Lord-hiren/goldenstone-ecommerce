@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getProductDetails } from "../actions/productActions";
 import Loader from "../components/Loader";
-import { Rating } from "@mui/material";
+import { Button, Rating } from "@mui/material";
+import { toast } from "react-toastify";
+import { addItemsToCart } from "../actions/cartActions";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -14,6 +16,7 @@ const ProductDetail = () => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [num, setnum] = useState(1);
+  const [quantity, setQuantity] = useState(1);
 
   const _id = params.id;
 
@@ -27,6 +30,7 @@ const ProductDetail = () => {
     e.preventDefault();
     if (num > 1) {
       setnum(num - 1);
+      setQuantity(num - 1);
     }
   };
 
@@ -34,12 +38,27 @@ const ProductDetail = () => {
     e.preventDefault();
     if (num < 20) {
       setnum(num + 1);
+      setQuantity(num + 1);
     }
   };
 
   const { product, loading, error } = useSelector(
     (state) => state.productDetail
   );
+
+  const price = product && product.price;
+  const dis = product && product.discount;
+  const disinpr = Math.ceil((price * dis) / 100);
+
+  const disprice = price - disinpr;
+
+  const handelAddToCart = (e) => {
+    e.preventDefault();
+
+    dispatch(addItemsToCart(_id, quantity));
+
+    toast.success("Add To Cart Success");
+  };
 
   return (
     <>
@@ -133,29 +152,47 @@ const ProductDetail = () => {
                     <div className="col-12">
                       <div className="white-card">
                         <h1 className="font-2 text-gold fw-medium">
-                          ₹ {product && product.price}/-{" "}
-                          <span className="fs-4 text-secondary text-decoration-line-through ps-2">
-                            {" "}
-                            ₹ 3500
-                          </span>
+                          {product && product.discount === 0 ? (
+                            <>₹{product && product.price}</>
+                          ) : (
+                            <>
+                              ₹ {disprice}{" "}
+                              <span className="fs-5 text-secondary text-decoration-line-through ps-2">
+                                {" "}
+                                ₹ {product && product.price}
+                              </span>
+                              <br />{" "}
+                              <span className="fs-5 m-0 ps-2">
+                                -{product && product.discount}%
+                              </span>{" "}
+                            </>
+                          )}
                         </h1>
-                        <div className="select-quantity">
-                          <p
-                            className="dic fs-4 user-select-none"
-                            onClick={(e) => dicNum(e)}
-                          >
-                            -
-                          </p>
-                          <p className="num fs-4 user-select-none">{num}</p>
-                          <p
-                            className="inc fs-4 user-select-none"
-                            onClick={(e) => incNum(e)}
-                          >
-                            +
-                          </p>
-                        </div>
-                        <div>
-                          <button>Add to cart</button>
+                        <div className="d-flex justify-content-center align-items-center">
+                          <div className="select-quantity">
+                            <p
+                              className="dic fs-4 user-select-none ms-auto"
+                              onClick={(e) => dicNum(e)}
+                            >
+                              -
+                            </p>
+                            <p className="num fs-4 user-select-none">{num}</p>
+                            <p
+                              className="inc fs-4 user-select-none me-2"
+                              onClick={(e) => incNum(e)}
+                            >
+                              +
+                            </p>
+                          </div>
+                          <div className="w-100">
+                            <Button
+                              variant="contained"
+                              onClick={(e) => handelAddToCart(e)}
+                              className="btn-gold"
+                            >
+                              Add to Cart
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </div>
