@@ -5,8 +5,15 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { removeItemsFromCart } from "../actions/cartActions";
 
 const CartData = ({ props }) => {
+  const dispatch = useDispatch();
+
+  const deleteCartItemHandler = (id) => {
+    dispatch(removeItemsFromCart(id));
+  };
   return (
     <>
       <Accordion className="bg-light">
@@ -19,7 +26,11 @@ const CartData = ({ props }) => {
           {props.name}
           <span className=" px-2 px-lg-4">{props.price}</span>
           <span className="ms-auto">
-            <IconButton aria-label="delete" color="error">
+            <IconButton
+              aria-label="delete"
+              color="error"
+              onClick={() => deleteCartItemHandler(props.product)}
+            >
               <DeleteIcon />
             </IconButton>
           </span>

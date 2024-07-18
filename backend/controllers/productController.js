@@ -37,7 +37,7 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
 
 // Get All Product
 exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
-  const resultPerPage = 6;
+  const resultPerPage = 8;
   const productsCount = await Product.countDocuments();
 
   const apiFeature = new ApiFeatures(Product.find(), req.query)
@@ -150,25 +150,42 @@ exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
 
 // Create New Review or Update the review
 exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
-  const { rating, comment, productId } = req.body;
+  const { rating, comment, productId, user, name } = req.body;
+
+  if (!user || !productId || !rating) {
+    return res.status(400).json({
+      success: false,
+      message: "Missing required fields",
+    });
+  }
 
   const review = {
-    user: req.user._id,
-    name: req.user.name,
+    user,
+    name,
     rating: Number(rating),
     comment,
   };
 
   const product = await Product.findById(productId);
 
+  if (!product) {
+    return res.status(404).json({
+      success: false,
+      message: "Product not found",
+    });
+  }
+
   const isReviewed = product.reviews.find(
-    (rev) => rev.user.toString() === req.user._id.toString()
+    (rev) => rev.user && rev.user.toString() === user
   );
+  console.log("Existing Review:", isReviewed);
 
   if (isReviewed) {
     product.reviews.forEach((rev) => {
-      if (rev.user.toString() === req.user._id.toString())
-        (rev.rating = rating), (rev.comment = comment);
+      if (rev.user && rev.user.toString() === user) {
+        rev.rating = Number(rating);
+        rev.comment = comment;
+      }
     });
   } else {
     product.reviews.push(review);
@@ -182,6 +199,7 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
   });
 
   product.ratings = avg / product.reviews.length;
+  console.log("Product before save:", product);
 
   await product.save({ validateBeforeSave: false });
 

@@ -23,7 +23,7 @@ const ProductsCard = ({ props }) => {
                   {props.price -
                     Math.ceil((props.price * props.discount) / 100)}
                   /-{" "}
-                  <span className="fs-6 text-secondary text-decoration-line-through">
+                  <span className="fs-xs text-secondary text-decoration-line-through">
                     ₹{props.price}
                   </span>
                 </>

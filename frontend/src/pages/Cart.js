@@ -6,19 +6,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { removeItemsFromCart } from "../actions/cartActions";
 import { Button } from "@mui/material";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { cartItems } = useSelector((state) => state.cart);
-  const { user, loading } = useSelector((state) => state.user);
+  const { user, isAuthenticated, loading } = useSelector((state) => state.user);
 
-  const deleteCartItemHandler = (id) => {
-    dispatch(removeItemsFromCart(id));
+  const shipingHandler = () => {
+    if (isAuthenticated) {
+      navigate("/shipping");
+    } else {
+      toast.error("Pleace Login to Continue Shopping");
+    }
   };
-
-  console.log(typeof cartItems, cartItems);
 
   return (
     <>
@@ -58,7 +61,7 @@ const Cart = () => {
                         <div className="w-100 py-2">
                           <Button
                             variant="contained"
-                            // onClick={(e) => handelAddToCart(e)}
+                            onClick={(e) => shipingHandler(e)}
                             className="btn-gold px-4"
                           >
                             Chekout

@@ -16,6 +16,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
+    "country-state-city": "^3.2.1",
     "highcharts": "^11.4.3",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",

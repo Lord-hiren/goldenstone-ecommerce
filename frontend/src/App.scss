@@ -212,11 +212,11 @@ $main-bg: #f8f7f6;
 }
 
 .custom-data-grid .MuiDataGrid-cell:focus {
-  outline: none;
+  outline: none !important;
 }
 
 .custom-data-grid .MuiDataGrid-columnHeader:focus {
-  outline: none;
+  outline: none !important;
 }
 
 .input {
@@ -378,7 +378,6 @@ $main-bg: #f8f7f6;
   background-color: $lightGold !important;
   color: $gold !important;
 
-
   &:hover {
     background-color: $gold !important;
     color: $lightGold !important;
@@ -389,4 +388,56 @@ $main-bg: #f8f7f6;
   width: 2.5rem;
   max-width: 100%;
   margin: 0 1.5rem;
+}
+
+.shipinput {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.4rem;
+  border: 1px solid $lightGold;
+  transition: all 0.3s ease-in-out;
+  outline: none;
+  background-color: $lightGold;
+  color: gray;
+
+  &:active,
+  &:focus {
+    border: 1px solid $gold;
+    color: $gold;
+    background-color: white;
+  }
+
+  &::placeholder {
+    color: gray;
+  }
+
+  &::placeholder:focus {
+    color: $semiGold !important;
+  }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+textarea {
+  width: 100%;
+  height: 10rem;
+  padding: 1rem;
+  border: 1px solid black;
+  border-radius: 10px;
+  outline: none;
+  transition: all 0.3px ease-in-out;
+  margin-top: 1rem;
+}
+
+.filters {
+  width: 20rem;
+  min-height: 100vh;
 }

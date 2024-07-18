@@ -14,6 +14,13 @@ import Footer from "./components/Footer";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
+import Shipping from "./pages/Shipping";
+import OrderConfirm from "./pages/OrderConfirm";
+import OrderPlace from "./pages/OrderPlace";
+import Profile from "./pages/Profile";
+import ProtectedRoute from "./components/route/ProtectedRoute";
+import Adminorders from "./pages/admin/Adminorders";
+import AdminOrderDetails from "./pages/admin/AdminOrderDetails";
 
 function App() {
   return (
@@ -25,16 +32,68 @@ function App() {
           <Route path="/products" element={<Products />} />
           <Route path="/product/detail/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/shipping" element={<Shipping />} />
+          <Route path="/order/confirm" element={<OrderConfirm />} />
+          <Route path="/payment" element={<OrderPlace />} />
+          <Route path="/profile" element={<Profile />} />
 
-          <Route path="/v1/admin/dashbord" element={<Admin />} />
-          <Route path="/v1/admin/users" element={<AdminUsers />} />
-          <Route path="/v1/admin/products" element={<AdminProducts />} />
-          <Route path="/v1/admin/add/products" element={<AddNewProducts />} />
+          <Route
+            path="/v1/admin/dashbord"
+            element={
+              <ProtectedRoute>
+                <Admin />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/v1/admin/users"
+            element={
+              <ProtectedRoute>
+                <AdminUsers />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/v1/admin/products"
+            element={
+              <ProtectedRoute>
+                <AdminProducts />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/v1/admin/add/products"
+            element={
+              <ProtectedRoute>
+                <AddNewProducts />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/v1/admin/edit/products/:id"
-            element={<AdminEditproduct />}
+            element={
+              <ProtectedRoute>
+                <AdminEditproduct />
+              </ProtectedRoute>
+            }
           />
-          {/* <Route path="/v1/admin/orders" element={<Adminorders />} /> */}
+          <Route
+            path="/v1/admin/orders"
+            element={
+              <ProtectedRoute>
+                <Adminorders />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/v1/admin/order/details/:id"
+            element={
+              <ProtectedRoute>
+                <AdminOrderDetails />
+              </ProtectedRoute>
+            }
+          />
 
           <Route path="*" element={<Error />} />
         </Routes>

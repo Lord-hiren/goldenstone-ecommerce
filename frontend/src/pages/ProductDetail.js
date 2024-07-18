@@ -2,23 +2,25 @@ import React, { useEffect, useState } from "react";
 import Metadata from "../components/Metadata";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getProductDetails } from "../actions/productActions";
+import {
+  clearErrors,
+  getProductDetails,
+  newReview,
+} from "../actions/productActions";
 import Loader from "../components/Loader";
 import { Button, Rating } from "@mui/material";
 import { toast } from "react-toastify";
 import { addItemsToCart } from "../actions/cartActions";
+import { NEW_REVIEW_RESET } from "../constants/productConstants";
+import ReviewCard from "../components/ReviewCard";
 
 const ProductDetail = () => {
   const { id } = useParams();
-
   const dispatch = useDispatch();
-  const params = useParams();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
-  const [num, setnum] = useState(1);
+  const [num, setNum] = useState(1);
   const [quantity, setQuantity] = useState(1);
-
-  const _id = params.id;
 
   useEffect(() => {
     if (id) {
@@ -26,46 +28,60 @@ const ProductDetail = () => {
     }
   }, [dispatch, id]);
 
-  const dicNum = (e) => {
-    e.preventDefault();
-    if (num > 1) {
-      setnum(num - 1);
-      setQuantity(num - 1);
-    }
-  };
-
-  const incNum = (e) => {
-    e.preventDefault();
-    if (num < 20) {
-      setnum(num + 1);
-      setQuantity(num + 1);
-    }
-  };
-
   const { product, loading, error } = useSelector(
     (state) => state.productDetail
   );
+  const { success, error: reviewError } = useSelector(
+    (state) => state.newReview
+  );
+  const { isAuthenticated, user } = useSelector((state) => state.user);
 
   const price = product && product.price;
-  const dis = product && product.discount;
-  const disinpr = Math.ceil((price * dis) / 100);
+  const discount = product && product.discount;
+  const discountedPrice = discount
+    ? Math.ceil(price * (1 - discount / 100))
+    : price;
 
-  const disprice = price - disinpr;
-
-  const handelAddToCart = (e) => {
+  const handleAddToCart = (e) => {
     e.preventDefault();
+    dispatch(addItemsToCart(id, quantity));
+    toast.success("Added to Cart Successfully");
+  };
 
-    dispatch(addItemsToCart(_id, quantity));
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(clearErrors());
+    }
 
-    toast.success("Add To Cart Success");
+    if (reviewError) {
+      toast.error(reviewError);
+      dispatch(clearErrors());
+    }
+
+    if (success) {
+      toast.success("Review submitted successfully");
+      dispatch({ type: NEW_REVIEW_RESET });
+    }
+  }, [dispatch, error, reviewError, success]);
+
+  const submitReviewHandler = (e) => {
+    e.preventDefault();
+    const myForm = new FormData();
+    myForm.set("rating", rating);
+    myForm.set("comment", comment);
+    myForm.set("productId", id);
+    myForm.set("name", user && user.name);
+    myForm.set("user", user && user._id);
+    dispatch(newReview(myForm));
+    setRating(0);
+    setComment("");
   };
 
   return (
     <>
-      {loading === true ? (
-        <>
-          <Loader />
-        </>
+      {loading ? (
+        <Loader />
       ) : (
         <>
           <Metadata title="Royal Crown" />
@@ -77,49 +93,50 @@ const ProductDetail = () => {
                     <div className="p-4">
                       <div
                         id="carouselExampleControls"
-                        class="carousel carousel-dark slide"
+                        className="carousel carousel-dark slide"
                         data-bs-ride="carousel"
                       >
-                        <div class="carousel-inner">
+                        <div className="carousel-inner">
                           {product &&
-                            product?.images?.map((val, ind) => (
-                              <>
-                                <div
-                                  class="carousel-item active text-center"
-                                  key={ind}
-                                >
-                                  <img
-                                    src={val.url}
-                                    class="img-fluid"
-                                    alt="..."
-                                  />
-                                </div>
-                              </>
+                            product.images &&
+                            product.images.map((val, ind) => (
+                              <div
+                                className={`carousel-item ${
+                                  ind === 0 ? "active" : ""
+                                } text-center`}
+                                key={ind}
+                              >
+                                <img
+                                  src={val.url}
+                                  className="img-fluid"
+                                  alt="Product"
+                                />
+                              </div>
                             ))}
                         </div>
                         <button
-                          class="carousel-control-prev"
+                          className="carousel-control-prev"
                           type="button"
                           data-bs-target="#carouselExampleControls"
                           data-bs-slide="prev"
                         >
                           <span
-                            class="carousel-control-prev-icon"
+                            className="carousel-control-prev-icon"
                             aria-hidden="true"
                           ></span>
-                          <span class="visually-hidden">Previous</span>
+                          <span className="visually-hidden">Previous</span>
                         </button>
                         <button
-                          class="carousel-control-next"
+                          className="carousel-control-next"
                           type="button"
                           data-bs-target="#carouselExampleControls"
                           data-bs-slide="next"
                         >
                           <span
-                            class="carousel-control-next-icon"
+                            className="carousel-control-next-icon"
                             aria-hidden="true"
                           ></span>
-                          <span class="visually-hidden">Next</span>
+                          <span className="visually-hidden">Next</span>
                         </button>
                       </div>
                     </div>
@@ -138,48 +155,66 @@ const ProductDetail = () => {
                         <Rating
                           name="half-rating"
                           readOnly
-                          defaultValue={product && product.ratings}
+                          value={product && product.ratings}
                           precision={0.5}
                         />
                         <p className="text-secondary">
                           Number Of Reviews ({product && product.numOfReviews})
-                        </p>
-                        <p className="border1 p-3 fs-xs text-secondary m-0  ">
-                          {product && product.description}
                         </p>
                       </div>
                     </div>
                     <div className="col-12">
                       <div className="white-card">
                         <h1 className="font-2 text-gold fw-medium">
-                          {product && product.discount === 0 ? (
-                            <>₹{product && product.price}</>
+                          {discount === 0 ? (
+                            <>₹{price}</>
                           ) : (
                             <>
-                              ₹ {disprice}{" "}
+                              ₹{discountedPrice}
                               <span className="fs-5 text-secondary text-decoration-line-through ps-2">
-                                {" "}
-                                ₹ {product && product.price}
+                                ₹{price}
                               </span>
-                              <br />{" "}
+                              <br />
                               <span className="fs-5 m-0 ps-2">
-                                -{product && product.discount}%
-                              </span>{" "}
+                                -{discount}%
+                              </span>
                             </>
                           )}
                         </h1>
+                        <p>
+                          Status:{" "}
+                          {product.stock < 1 ? (
+                            <span className="text-danger fw-bold">
+                              Out of stock
+                            </span>
+                          ) : (
+                            <span className="text-success fw-bold">
+                              In stock
+                            </span>
+                          )}
+                        </p>
                         <div className="d-flex justify-content-center align-items-center">
                           <div className="select-quantity">
                             <p
                               className="dic fs-4 user-select-none ms-auto"
-                              onClick={(e) => dicNum(e)}
+                              onClick={() => {
+                                if (num > 1) {
+                                  setNum(num - 1);
+                                  setQuantity(num - 1);
+                                }
+                              }}
                             >
                               -
                             </p>
                             <p className="num fs-4 user-select-none">{num}</p>
                             <p
                               className="inc fs-4 user-select-none me-2"
-                              onClick={(e) => incNum(e)}
+                              onClick={() => {
+                                if (num < 20) {
+                                  setNum(num + 1);
+                                  setQuantity(num + 1);
+                                }
+                              }}
                             >
                               +
                             </p>
@@ -187,8 +222,9 @@ const ProductDetail = () => {
                           <div className="w-100">
                             <Button
                               variant="contained"
-                              onClick={(e) => handelAddToCart(e)}
+                              onClick={handleAddToCart}
                               className="btn-gold"
+                              disabled={product.stock < 1}
                             >
                               Add to Cart
                             </Button>
@@ -196,6 +232,61 @@ const ProductDetail = () => {
                         </div>
                       </div>
                     </div>
+                    <div className="col-12">
+                      <div className="white-card">
+                        <p className="m-0 ps-3">
+                          Description: <br />
+                          <span className="p-3 fs-xs text-secondary m-0">
+                            {product && product.description}
+                          </span>
+                        </p>
+                        <hr />
+                        <h6 className="m-0 mt-3 text-center">Submit Review</h6>
+                        <div className="text-center text-md-start px-0 px-md-4 mt-3">
+                          <Rating
+                            name="half-rating"
+                            precision={1}
+                            value={rating}
+                            onChange={(e) => setRating(e.target.value)}
+                          />
+                        </div>
+                        <div className="px-0 px-md-4">
+                          <textarea
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                            placeholder="Write your review..."
+                            id="comment"
+                            className="reaview-box"
+                          ></textarea>
+                        </div>
+                        <div className="px-0 px-md-4 mt-2">
+                          <Button
+                            variant="contained"
+                            className="btn-gold"
+                            onClick={submitReviewHandler}
+                            disabled={isAuthenticated === false ? true : false}
+                          >
+                            Submit
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-12">
+                  <div className="white-card d-flex g-3 overflow-auto">
+                    {product.reviews && product.reviews[0] ? (
+                      <>
+                        {product.reviews &&
+                          product.reviews.map((val, ind) => (
+                            <ReviewCard key={ind} props={val} />
+                          ))}
+                      </>
+                    ) : (
+                      <>
+                        <p className="m-0 text-center p-0">No Reviews yet</p>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

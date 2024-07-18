@@ -5,8 +5,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { clearErrors, getProduct } from "../actions/productActions";
 import Loader from "../components/Loader";
-import { IconButton, InputBase, Pagination, Paper } from "@mui/material";
+import {
+  Drawer,
+  IconButton,
+  InputBase,
+  Pagination,
+  Paper,
+  Tooltip,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import FilterAltRoundedIcon from "@mui/icons-material/FilterAltRounded";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -14,19 +23,31 @@ const Products = () => {
     useSelector((state) => state.products);
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [keyword, setkeyword] = useState("");
+  const [keywords, setkeywords] = useState("");
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (error) {
       toast.error(error);
       dispatch(clearErrors());
     }
-    dispatch(getProduct("", currentPage));
+    dispatch(getProduct(keyword, currentPage));
     // keyword, currentPage, price, category, ratings
-  }, [dispatch, currentPage, error]);
+  }, [dispatch, currentPage, error, keyword]);
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
     console.log(value);
+  };
+
+  const handelAddKeyword = (e) => {
+    e.preventDefault();
+    setkeyword(keywords);
+  };
+
+  const toggleDrawer = (newOpen) => () => {
+    setOpen(newOpen);
   };
 
   return (
@@ -53,14 +74,30 @@ const Products = () => {
                     placeholder="Search For Products"
                     inputProps={{ "aria-label": "search google maps" }}
                     className="px-3"
+                    value={keywords}
+                    onChange={(e) => setkeywords(e.target.value)}
                   />
-                  <IconButton
-                    type="button"
-                    sx={{ p: "10px" }}
-                    aria-label="search"
-                  >
-                    <SearchIcon />
-                  </IconButton>
+                  <Tooltip title="Search">
+                    <IconButton
+                      type="button"
+                      sx={{ p: "10px" }}
+                      aria-label="search"
+                      onClick={(e) => handelAddKeyword(e)}
+                    >
+                      <SearchIcon />
+                    </IconButton>
+                  </Tooltip>
+
+                  <Tooltip title="Filter">
+                    <IconButton
+                      type="button"
+                      sx={{ p: "10px" }}
+                      aria-label="search"
+                      onClick={toggleDrawer(true)}
+                    >
+                      <FilterAltRoundedIcon />
+                    </IconButton>
+                  </Tooltip>
                 </Paper>
               </div>
               <div className="white-card my-3">
@@ -87,6 +124,29 @@ const Products = () => {
               </div>
             </div>
           </div>
+          <Drawer open={open} anchor={"right"} onClose={toggleDrawer(false)}>
+            <div className="container-fluid filters bg-light">
+              <div className="text-end">
+                <Tooltip title="Close">
+                  <IconButton
+                    type="button"
+                    sx={{ p: "10px" }}
+                    aria-label="search"
+                    onClick={toggleDrawer(false)}
+                  >
+                    <CloseRoundedIcon />
+                  </IconButton>
+                </Tooltip>
+              </div>
+              <div className="container">
+                <div className="row">
+                  <div className="col-12 white-card p-2">
+                    <h5 className="text-center m-0 ">Filters</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Drawer>
         </>
       )}
     </>
