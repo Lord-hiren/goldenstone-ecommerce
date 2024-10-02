@@ -55,7 +55,7 @@ exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(userid);
 
   if (!user) {
-    return next(new ErrorHander('User not found', 404));
+    return next(new ErrorHander("User not found", 404));
   }
 
   res.status(200).json({
@@ -63,7 +63,6 @@ exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
     user,
   });
 });
-
 
 // Get all users (admin)
 exports.getAllUser = catchAsyncErrors(async (req, res, next) => {
@@ -94,8 +93,6 @@ exports.getSingleUser = catchAsyncErrors(async (req, res, next) => {
 // Update User Role -- Admin
 exports.updateUserRole = catchAsyncErrors(async (req, res, next) => {
   const newUserData = {
-    name: req.body.name,
-    email: req.body.email,
     role: req.body.role,
   };
 

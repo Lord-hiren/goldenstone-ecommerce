@@ -163,7 +163,7 @@ const AdminOrderDetails = () => {
                     <p className="col-6 text-end">₹{order.itemsPrice}</p>
                     <p className="col-6">Shipping Cost</p>
                     <p className="col-6 text-end">₹{order.shippingPrice}</p>
-                    <p className="col-6">G.S.T 18%</p>
+                    <p className="col-6">G.S.T 3%</p>
                     <p className="col-6 text-end">
                       ₹
                       {order.totalPrice -

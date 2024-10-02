@@ -17,9 +17,11 @@ import hero3 from "../asetes/img/hero3.png";
 import Tproducts from "../components/Tproducts";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, getProduct } from "../actions/productActions";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   // useGoogleOneTapLogin({
   //   onSuccess: (credentialResponse) => {
   //     fatchUser(credentialResponse);
@@ -48,7 +50,6 @@ const Home = () => {
     }
     dispatch(getProduct());
   }, [dispatch, error]);
-
 
   return (
     <>
@@ -107,7 +108,10 @@ const Home = () => {
               <div className="white-card">
                 <h3 className="py-2">Women Collection</h3>
                 <div className="row py-2 g-3">
-                  <div className="col-lg-3 col-md-3 col-sm-3 col-6  text-center">
+                  <div
+                    className="col-lg-3 col-md-3 col-sm-3 col-6  text-center"
+                    onClick={() => navigate(`/products/breslet`)}
+                  >
                     <img
                       src={Wbreslet}
                       alt=""
@@ -115,7 +119,10 @@ const Home = () => {
                     />
                     <h6 className="pt-2 font-2">Breslet</h6>
                   </div>
-                  <div className="col-lg-3 col-md-3 col-sm-3 col-6 text-center">
+                  <div
+                    className="col-lg-3 col-md-3 col-sm-3 col-6 text-center"
+                    onClick={() => navigate(`/products/eyrring`)}
+                  >
                     <img
                       src={Weyrring}
                       alt=""
@@ -123,11 +130,17 @@ const Home = () => {
                     />
                     <h6 className="pt-2 font-2">Eyrring</h6>
                   </div>
-                  <div className="col-lg-3 col-md-3 col-sm-3 col-6 text-center">
+                  <div
+                    className="col-lg-3 col-md-3 col-sm-3 col-6 text-center"
+                    onClick={() => navigate(`/products/ring`)}
+                  >
                     <img src={Wring} alt="" className="img-fluid thumbnale" />
                     <h6 className="pt-2 font-2">Ring</h6>
                   </div>
-                  <div className="col-lg-3 col-md-3 col-sm-3 col-6 text-center">
+                  <div
+                    className="col-lg-3 col-md-3 col-sm-3 col-6 text-center"
+                    onClick={() => navigate(`/products/necklace`)}
+                  >
                     <img
                       src={Wnecklace}
                       alt=""
@@ -142,7 +155,10 @@ const Home = () => {
               <div className="white-card">
                 <h3 className="py-2">Man Collection</h3>
                 <div className="row py-2 g-3">
-                  <div className="col-lg-3 col-md-3 col-sm-3 col-6  text-center">
+                  <div
+                    className="col-lg-3 col-md-3 col-sm-3 col-6  text-center"
+                    onClick={() => navigate(`/products/breslet`)}
+                  >
                     <img
                       src={mbreslet}
                       alt=""
@@ -150,7 +166,10 @@ const Home = () => {
                     />
                     <h6 className="pt-2 font-2">Breslet</h6>
                   </div>
-                  <div className="col-lg-3 col-md-3 col-sm-3 col-6 text-center">
+                  <div
+                    className="col-lg-3 col-md-3 col-sm-3 col-6 text-center"
+                    onClick={() => navigate(`/products/eyrring`)}
+                  >
                     <img
                       src={meyrring}
                       alt=""
@@ -158,11 +177,17 @@ const Home = () => {
                     />
                     <h6 className="pt-2 font-2">Eyrring</h6>
                   </div>
-                  <div className="col-lg-3 col-md-3 col-sm-3 col-6 text-center">
+                  <div
+                    className="col-lg-3 col-md-3 col-sm-3 col-6 text-center"
+                    onClick={() => navigate(`/products/ring`)}
+                  >
                     <img src={mring} alt="" className="img-fluid thumbnale" />
                     <h6 className="pt-2 font-2">Ring</h6>
                   </div>
-                  <div className="col-lg-3 col-md-3 col-sm-3 col-6 text-center">
+                  <div
+                    className="col-lg-3 col-md-3 col-sm-3 col-6 text-center"
+                    onClick={() => navigate(`/products/necklace`)}
+                  >
                     <img
                       src={mnecklace}
                       alt=""

@@ -22,45 +22,66 @@ const Footer = () => {
               <div className="d-flex">
                 <ul className="list-unstyled">
                   <li>
-                    <Link className="text-white-50 text-decoration-underline">
+                    <Link
+                      className="text-white-50 text-decoration-none glow-1"
+                      to={"/"}
+                    >
                       <ChevronRightIcon />
                       Home
                     </Link>
                   </li>
                   <li>
-                    <Link className="text-white-50 text-decoration-underline">
+                    <Link
+                      className="text-white-50 text-decoration-none glow-1"
+                      to={"/products"}
+                    >
                       <ChevronRightIcon />
                       Products
                     </Link>
                   </li>
                   <li>
-                    <Link className="text-white-50 text-decoration-underline">
+                    <Link
+                      className="text-white-50 text-decoration-none glow-1"
+                      to={"/cart"}
+                    >
                       <ChevronRightIcon />
                       Cart
                     </Link>
                   </li>
                   <li>
-                    <Link className="text-white-50 text-decoration-underline">
+                    <Link
+                      className="text-white-50 text-decoration-none glow-1"
+                      to={"/profile"}
+                    >
                       <ChevronRightIcon />
-                      Orders
+                      Profile
                     </Link>
                   </li>
                 </ul>
                 <ul className="list-unstyled">
                   <li>
-                    <Link className="text-white-50 text-decoration-underline">
+                    <Link
+                      className="text-white-50 text-decoration-none glow-1"
+                      to={"/t&c"}
+                    >
                       <ChevronRightIcon />
                       Terms & Conditions
                     </Link>
                   </li>
                   <li>
-                    <Link className="text-white-50 text-decoration-underline">
+                    <Link
+                      className="text-white-50 text-decoration-none glow-1"
+                      to={"/about"}
+                    >
                       <ChevronRightIcon />
                       About Us
                     </Link>
                   </li>
                   <li>
-                    <Link className="text-white-50 text-decoration-underline">
+                    <Link
+                      className="text-white-50 text-decoration-none glow-1"
+                      to={"/refundpolicy"}
+                    >
                       <ChevronRightIcon />
                       Refund Policy
                     </Link>
@@ -71,7 +92,8 @@ const Footer = () => {
             <div className="col-lg-4 col-md-4 col-sm-12 py-5">
               <h3 className="text-white">Contact us</h3>
               <p className="text-white-50">
-                Contact us: <span className="text-white">royalcrown2525@gmail.com</span>
+                Contact us:{" "}
+                <span className="text-white">royalcrown2525@gmail.com</span>
               </p>
             </div>
           </div>

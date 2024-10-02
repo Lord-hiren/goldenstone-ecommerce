@@ -73,7 +73,8 @@ exports.myOrders = catchAsyncErrors(async (req, res, next) => {
 
 // get all Orders -- Admin
 exports.getAllOrders = catchAsyncErrors(async (req, res, next) => {
-  const orders = await Order.find();
+  // Sort orders by createdAt in descending order
+  const orders = await Order.find().sort({ createdAt: -1 });
 
   let totalAmount = 0;
 
@@ -96,34 +97,44 @@ exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHander("Order not found with this Id", 404));
   }
 
-  if (order.orderStatus === "Delivered") {
+  if (order.orderStatus === "delivered") {
     return next(new ErrorHander("You have already delivered this order", 400));
   }
 
-  if (req.body.status === "Shipped") {
-    order.orderItems.forEach(async (o) => {
-      await updateStock(o.product, o.quantity);
-    });
+  if (req.body.status === "packed") {
+    // Decrement stock by 1 for each product
+    await Promise.all(
+      order.orderItems.map(async (o) => {
+        await updateStock(o.product, 1); // Decrease stock by 1
+      })
+    );
   }
+
   order.orderStatus = req.body.status;
 
-  if (req.body.status === "Delivered") {
+  if (req.body.status === "delivered") {
     order.deliveredAt = Date.now();
   }
 
   await order.save({ validateBeforeSave: false });
+
   res.status(200).json({
     success: true,
   });
 });
 
-async function updateStock(id, quantity) {
-  const product = await Product.findById(id);
+const updateStock = async (productId, quantity) => {
+  const product = await Product.findById(productId);
 
-  product.Stock -= quantity;
+  if (!product) {
+    throw new Error("Product not found");
+  }
+
+  // Decrease the stock by the provided quantity (in this case, 1)
+  product.stock -= quantity;
 
   await product.save({ validateBeforeSave: false });
-}
+};
 
 // delete Order -- Admin
 exports.deleteOrder = catchAsyncErrors(async (req, res, next) => {

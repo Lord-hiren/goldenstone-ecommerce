@@ -8,11 +8,13 @@ import store from "./store";
 import { CookiesProvider } from "react-cookie";
 import { ToastContainer, Flip } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ThemeProvider } from "@mui/material";
+import theme from "./Theme";
 
 // Get the root element to mount the React app
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  <ThemeProvider theme={theme}>
     <Provider store={store}>
       <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLINT_ID}>
         <CookiesProvider defaultSetOptions={{ path: "/" }}>
@@ -33,7 +35,7 @@ root.render(
         </CookiesProvider>
       </GoogleOAuthProvider>
     </Provider>
-  </React.StrictMode>
+  </ThemeProvider>
 );
 
 // Measure app performance

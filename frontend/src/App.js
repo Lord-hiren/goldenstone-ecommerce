@@ -21,6 +21,9 @@ import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/route/ProtectedRoute";
 import Adminorders from "./pages/admin/Adminorders";
 import AdminOrderDetails from "./pages/admin/AdminOrderDetails";
+import TermsAndConditions from "./pages/TermsAndConditions";
+import RefundPolicy from "./pages/RefundPolicy";
+import AboutUs from "./pages/AboutUs";
 
 function App() {
   return (
@@ -30,6 +33,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/products/:keyword" element={<Products />} />
           <Route path="/product/detail/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/shipping" element={<Shipping />} />
@@ -37,8 +41,12 @@ function App() {
           <Route path="/payment" element={<OrderPlace />} />
           <Route path="/profile" element={<Profile />} />
 
+          <Route path="/t&c" element={<TermsAndConditions />} />
+          <Route path="/refundpolicy" element={<RefundPolicy />} />
+          <Route path="/about" element={<AboutUs />} />
+
           <Route
-            path="/v1/admin/dashbord"
+            path="/v1/admin/dashboard"
             element={
               <ProtectedRoute>
                 <Admin />

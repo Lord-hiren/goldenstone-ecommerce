@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const cors = require('cors');
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
@@ -10,7 +10,7 @@ const errorMiddleware = require("./middleware/error");
 
 // Config
 if (process.env.NODE_ENV !== "PROODUCTION") {
-    require("dotenv").config({ path: "backend/config/config.env" });
+  require("dotenv").config({ path: "backend/config/config.env" });
 }
 
 app.use(cookieParser());
@@ -21,17 +21,18 @@ app.use(express.json({ limit: "20mb" }));
 app.use(express.urlencoded({ limit: "20mb", extended: true }));
 
 // Allow only requests from http://localhost:3000
-app.use(cors({
-    origin: 'http://localhost:3000',
+app.use(
+  cors({
+    origin: "http://localhost:3000",
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-}));
-
+  })
+);
 
 // Route Imports
 const product = require("./routes/productRoute");
 const user = require("./routes/userRoute");
 const order = require("./routes/orderRoute");
-const paymentRoutes = require('./routes/paymentRoutes');
+const paymentRoutes = require("./routes/paymentRoutes");
 
 app.use("/api/v1", product);
 app.use("/api/v1", user);
@@ -46,7 +47,7 @@ app.use(express.static(path.join(__dirname, "../frontend/build")));
 // });
 
 app.get("/api/getkey", (req, res) =>
-    res.status(200).json({ key: process.env.RAZORPAY_API_KEY })
+  res.status(200).json({ key: process.env.RAZORPAY_API_KEY })
 );
 
 // Middleware for Errors

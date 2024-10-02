@@ -18,8 +18,8 @@ router.route("/me").post(getUserDetails);
 router.route("/admin/users").get(getAllUser);
 router
   .route("/admin/user/:id")
-  .get(isAuthenticatedUser, authorizeRoles("admin"), getSingleUser)
-  .put(isAuthenticatedUser, authorizeRoles("admin"), updateUserRole)
-  .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteUser);
+  .get(getSingleUser)
+  .put(updateUserRole)
+  .delete(deleteUser);
 
 module.exports = router;

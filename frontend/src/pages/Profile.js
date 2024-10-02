@@ -43,7 +43,8 @@ const Profile = () => {
                           <Avatar
                             alt={user && user.name}
                             src={user && user.avatar.url}
-                            className="img-fluid w-50 h-50 m-auto border"
+                            sx={{ width: 80, height: 80 }}
+                            className="img-fluid  m-auto border"
                           />
                         </div>
                       </div>
@@ -82,7 +83,15 @@ const Profile = () => {
                                           <th>{ind + 1}</th>
                                           <td>{val._id}</td>
                                           <td>{val.totalPrice}</td>
-                                          <td>{val.orderStatus}</td>
+                                          <td
+                                            className={
+                                              val.orderStatus === "delivered"
+                                                ? "text-success text-uppercase"
+                                                : "text-uppercase"
+                                            }
+                                          >
+                                            {val.orderStatus}
+                                          </td>
                                         </tr>
                                       </>
                                     ))}

@@ -4,33 +4,50 @@ import Loader from "../../components/Loader";
 import AdminNav from "../../components/AdminNav";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
-import { getAllUsers } from "../../actions/userAction";
+import {
+  clearErrors,
+  deleteUser,
+  getAllUsers,
+  updateUser,
+} from "../../actions/userAction";
 import { IconButton, Switch } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import {
+  CLEAR_ERRORS,
+  DELETE_USER_RESET,
+  UPDATE_USER_RESET,
+} from "../../constants/userConstants";
+import { toast } from "react-toastify";
 
 const AdminUsers = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { loading, isAuthenticated } = useSelector((state) => state.user);
-  const { users } = useSelector((state) => state.allUsers);
+  const { error, users } = useSelector((state) => state.allUsers);
+  const {
+    error: deleteError,
+    isDeleted,
+    isUpdated,
+  } = useSelector((state) => state.userDetails);
 
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/");
-    } else {
-      dispatch(getAllUsers());
     }
   }, [dispatch, isAuthenticated, navigate]);
 
   const handleDelete = (id) => {
-    console.log("Delete user with ID:", id);
+    dispatch(deleteUser(id));
   };
 
   const handleRoleChange = (id, event) => {
-    const newRole = event.target.checked ? "admin" : "user";
-    console.log("Change role of user with ID:", id, "to", newRole);
+    const role = event.target.checked ? "admin" : "user";
     // Dispatch an action to change the user role
+    const myForm = new FormData();
+
+    myForm.set("role", role);
+    dispatch(updateUser(id, myForm));
   };
 
   const columns = [
@@ -71,6 +88,32 @@ const AdminUsers = () => {
       email: user.email,
       role: user.role,
     }));
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(clearErrors());
+    }
+
+    if (deleteError) {
+      toast.error(deleteError);
+      dispatch(CLEAR_ERRORS());
+    }
+
+    if (isDeleted) {
+      toast.success("User deleted");
+      dispatch(getAllUsers());
+      dispatch({ type: DELETE_USER_RESET });
+    }
+
+    if (isUpdated) {
+      toast.success("User updated");
+      dispatch(getAllUsers());
+      dispatch({ type: UPDATE_USER_RESET });
+    }
+
+    console.log(isUpdated);
+  }, [error, dispatch, isDeleted, deleteError, navigate, isUpdated]);
 
   return (
     <>

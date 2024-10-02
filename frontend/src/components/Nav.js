@@ -11,7 +11,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
@@ -22,7 +21,7 @@ import {
   logout,
 } from "../actions/userAction";
 import { useCookies } from "react-cookie";
-import { jwtDecode } from "jwt-decode"; // Corrected import statement
+import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 import { LOGOUT_SUCCESS } from "../constants/userConstants";
 import logo from "../asetes/img/logo.png";
@@ -30,8 +29,10 @@ import logo from "../asetes/img/logo.png";
 const pages = [
   { title: "Home", dest: "/" },
   { title: "Products", dest: "/products" },
+  { title: "About us", dest: "/about" },
+  { title: "Cart", dest: "/cart" },
 ];
-const settings = ["Profile", "Cart", "Dashboard", "Logout"];
+const settings = ["Profile", "Cart", "Logout"];
 
 const Nav = () => {
   const [cookies, , removeCookie] = useCookies(["token"]);
@@ -89,9 +90,6 @@ const Nav = () => {
       case "Cart":
         navigate("/cart");
         break;
-      case "Dashboard":
-        navigate("/dashboard");
-        break;
       case "Logout":
         removeCookie("token");
         dispatch({ type: LOGOUT_SUCCESS });
@@ -121,106 +119,112 @@ const Nav = () => {
   }, []);
 
   return (
-    <AppBar position="static" className="black">
+    <AppBar position="static" color="secondary">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <img src={logo} alt="" className="img-fluid" />
+          {/* Logo */}
+          <Box sx={{ display: { xs: "flex", md: "none" }, flexGrow: 1 }}>
+            <img
+              src={logo}
+              alt="Logo"
+              style={{ height: "40px", cursor: "pointer" }}
+              onClick={() => navigate("/")}
+            />
+          </Box>
 
+          {/* Mobile Menu */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
+              aria-label="open navigation menu"
               onClick={handleOpenNavMenu}
               color="inherit"
             >
               <MenuIcon />
             </IconButton>
             <Menu
-              id="menu-appbar"
               anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
+              anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
               keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
+              transformOrigin={{ vertical: "top", horizontal: "left" }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.dest} onClick={handleCloseNavMenu}>
+                <MenuItem
+                  key={page.dest}
+                  onClick={(e) => navigatePage(e, page.dest)}
+                >
                   <Typography textAlign="center">{page.title}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          {/* Desktop Logo */}
+          <Box sx={{ display: { xs: "none", md: "flex" }, mr: 2 }}>
+            <img
+              src={logo}
+              alt="Logo"
+              style={{ height: "40px", cursor: "pointer" }}
+              onClick={() => navigate("/")}
+            />
+          </Box>
+
+          {/* Desktop Navigation */}
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              justifyContent: "center",
+            }}
+          >
             {pages.map((page) => (
               <Button
                 key={page.dest}
-                sx={{ my: 2, color: "white", display: "block" }}
                 onClick={(e) => navigatePage(e, page.dest)}
+                sx={{ my: 2, color: "black", display: "block", mx: 3 }}
               >
                 {page.title}
               </Button>
             ))}
           </Box>
+
+          {/* User Avatar and Login Button */}
           {isAuthenticated ? (
-            <>
-              <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="" src={user.avatar.url} />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: "45px" }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
-                  {settings.map((setting) => (
-                    <MenuItem
-                      key={setting}
-                      onClick={() => handleSettingClick(setting)}
-                    >
-                      <Typography textAlign="center">{setting}</Typography>
-                    </MenuItem>
-                  ))}
-                </Menu>
-              </Box>
-            </>
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt={user?.name} src={user?.avatar?.url} />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                anchorEl={anchorElUser}
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                keepMounted
+                transformOrigin={{ vertical: "top", horizontal: "right" }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <MenuItem
+                    key={setting}
+                    onClick={() => handleSettingClick(setting)}
+                  >
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
           ) : (
-            <>
-              <div>
-                <button
-                  type="button"
-                  className="login-with-google-btn"
-                  onClick={() => login()}
-                >
-                  Sign in with Google
-                </button>
-              </div>
-            </>
+            <button
+              type="button"
+              class="login-with-google-btn"
+              onClick={() => login()}
+            >
+              Sign in with Google
+            </button>
           )}
         </Toolbar>
       </Container>

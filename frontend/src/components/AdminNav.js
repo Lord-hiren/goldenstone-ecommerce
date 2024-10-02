@@ -40,7 +40,7 @@ const AdminNav = () => {
         <div className="col-12">
           <ul className="ul">
             <li className="li">
-              <Link className="link" to="/v1/admin/dashbord">
+              <Link className="link" to="/v1/admin/dashboard">
                 <DashboardRoundedIcon /> Dashbord
               </Link>
             </li>

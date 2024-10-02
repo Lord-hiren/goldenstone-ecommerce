@@ -9,7 +9,6 @@ import {
   AccordionDetails,
   AccordionSummary,
   Button,
-  IconButton,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
@@ -23,11 +22,41 @@ const OrderConfirm = () => {
     (acc, item) => acc + item.quantity * item.price,
     0
   );
-  const ShippingCharge = subtotal >= 500 ? 0 : 100;
-  const tex = subtotal * 0.18;
-  const amount = subtotal + ShippingCharge + tex;
+  const ShippingCharge = subtotal >= 799 ? 0 : 70;
+  const tex = subtotal * 0.03;
+  const amount = Math.ceil(subtotal + ShippingCharge + tex);
 
   const address = `${shippingInfo.address},${shippingInfo.city},${shippingInfo.state},${shippingInfo.country},${shippingInfo.pinCode}`;
+
+  // rzp payment
+
+  const Proceedtopayment = async (data, order, order_id) => {
+    try {
+      const options = {
+        key: process.env.RAZORPAY_API_KEY,
+        amount: data.order_total_amount,
+        currency: "INR",
+        name: "Royalcroun",
+        description: "Payment",
+        image: "",
+        order_id: order.id,
+        handler: function (response) {
+          const sendData = {
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+            order_id: order_id,
+          };
+          console.log(response);
+        },
+        theme: {
+          color: "#832729",
+        },
+      };
+
+      const razor = new window.Razorpay(options);
+      razor.open();
+    } catch (error) {}
+  };
   return (
     <>
       {loading ? (
@@ -123,7 +152,7 @@ const OrderConfirm = () => {
                             <div className="col-6 p-2 text-end">
                               ₹ {ShippingCharge}
                             </div>
-                            <div className="col-6 p-2">G.S.T :</div>
+                            <div className="col-6 p-2">G.S.T 3% :</div>
                             <div className="col-6 p-2 text-end">₹ {tex}</div>
                             <hr />
                             <div className="col-6 p-2 fw-bold">Total :</div>
