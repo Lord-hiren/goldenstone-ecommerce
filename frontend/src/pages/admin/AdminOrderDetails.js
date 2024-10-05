@@ -47,7 +47,6 @@ const AdminOrderDetails = () => {
       dispatch(getOrderDetails(id));
     }
   }, [dispatch, error, deleteError, isUpdated, id]);
-  console.log(order);
 
   useEffect(() => {
     if (order && order.orderStatus) {
@@ -78,8 +77,6 @@ const AdminOrderDetails = () => {
 
     dispatch(updateOrder(id, myForm));
   };
-
-  console.log("status", status);
 
   return (
     <>

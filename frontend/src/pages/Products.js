@@ -45,7 +45,6 @@ const Products = () => {
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
-    console.log(value);
   };
 
   const toggleDrawer = (newOpen) => () => {

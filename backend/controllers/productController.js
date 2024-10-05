@@ -178,7 +178,6 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
   const isReviewed = product.reviews.find(
     (rev) => rev.user && rev.user.toString() === user
   );
-  console.log("Existing Review:", isReviewed);
 
   if (isReviewed) {
     product.reviews.forEach((rev) => {
@@ -199,7 +198,6 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
   });
 
   product.ratings = avg / product.reviews.length;
-  console.log("Product before save:", product);
 
   await product.save({ validateBeforeSave: false });
 

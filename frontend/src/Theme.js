@@ -18,6 +18,9 @@ const theme = createTheme({
       secondary: "#ff6600",
     },
   },
+  typography: {
+    fontFamily: "'Mulish', sans-serif",
+  },
 });
 
 export default theme;

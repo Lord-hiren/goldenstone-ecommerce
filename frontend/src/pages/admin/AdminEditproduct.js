@@ -83,13 +83,9 @@ const AdminEditProduct = () => {
       });
     });
 
-    Promise.all(promises)
-      .then((base64Files) => {
-        setImages(base64Files);
-      })
-      .catch((error) => {
-        console.error("Error converting files to base64", error);
-      });
+    Promise.all(promises).then((base64Files) => {
+      setImages(base64Files);
+    });
   };
 
   useEffect(() => {

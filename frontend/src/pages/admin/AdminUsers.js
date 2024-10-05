@@ -111,8 +111,6 @@ const AdminUsers = () => {
       dispatch(getAllUsers());
       dispatch({ type: UPDATE_USER_RESET });
     }
-
-    console.log(isUpdated);
   }, [error, dispatch, isDeleted, deleteError, navigate, isUpdated]);
 
   return (

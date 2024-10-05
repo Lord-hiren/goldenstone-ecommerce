@@ -23,8 +23,8 @@ app.use(express.urlencoded({ limit: "20mb", extended: true }));
 // Allow only requests from http://localhost:3000
 app.use(
   cors({
-    origin: "http://localhost:3000",
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+    origin: "*",
+    optionsSuccessStatus: 200,
   })
 );
 
@@ -42,9 +42,9 @@ app.use("/api", paymentRoutes);
 
 app.use(express.static(path.join(__dirname, "../frontend/build")));
 
-// app.get("*", (req, res) => {
-//     res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
-// });
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
+});
 
 app.get("/api/getkey", (req, res) =>
   res.status(200).json({ key: process.env.RAZORPAY_API_KEY })

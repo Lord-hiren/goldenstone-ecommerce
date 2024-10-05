@@ -31,6 +31,23 @@ $main-bg: #f8f7f6;
   min-height: 88vh;
 }
 
+.bg-main {
+  background-color: $main-bg !important;
+}
+
+.bg-gold {
+  background-color: $gold;
+}
+
+.bg-nav {
+  background-color: $lightGold;
+}
+
+.nav-link {
+  color: $gold !important;
+  font-weight: 500;
+}
+
 .black {
   background-color: $black !important;
 }

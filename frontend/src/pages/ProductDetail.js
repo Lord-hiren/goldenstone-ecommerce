@@ -62,6 +62,7 @@ const ProductDetail = () => {
     if (success) {
       toast.success("Review submitted successfully");
       dispatch({ type: NEW_REVIEW_RESET });
+      getProductDetails(id);
     }
   }, [dispatch, error, reviewError, success]);
 
@@ -84,7 +85,7 @@ const ProductDetail = () => {
         <Loader />
       ) : (
         <>
-          <Metadata title="Royal Crown" />
+          <Metadata title="Royal Crown --Product Details" />
           <div className="container-fluid main-bg">
             <div className="container py-1">
               <div className="row">

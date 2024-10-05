@@ -7,7 +7,11 @@ import { useNavigate } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { clearErrors, deleteProduct, getAdminProduct } from "../../actions/productActions";
+import {
+  clearErrors,
+  deleteProduct,
+  getAdminProduct,
+} from "../../actions/productActions";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import { toast } from "react-toastify";
@@ -42,7 +46,6 @@ const AdminProducts = () => {
   }, [dispatch, isDeleted, isDeleted, isAuthenticated, navigate]);
 
   const handleDelete = (id) => {
-    console.log("Delete product with ID:", id);
     dispatch(deleteProduct(id));
   };
 

@@ -2,7 +2,6 @@ import { Avatar, Rating } from "@mui/material";
 import React from "react";
 
 const ReviewCard = ({ props }) => {
-  console.log(props);
   return (
     <>
       <div className="col-lg-3 mx-2 p-2 border rounded-3 shadow-sm">

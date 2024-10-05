@@ -46,7 +46,6 @@ const OrderConfirm = () => {
             razorpay_signature: response.razorpay_signature,
             order_id: order_id,
           };
-          console.log(response);
         },
         theme: {
           color: "#832729",

@@ -101,7 +101,6 @@ const OrderPlace = () => {
       razor.open();
     } catch (error) {
       toast.error("Payment failed, please try again.");
-      console.error("Payment error:", error);
       setIsProcessing(false);
     }
   };

@@ -29,7 +29,7 @@ root.render(
             pauseOnFocusLoss
             draggable
             pauseOnHover
-            theme="colored"
+            theme="light"
             transition={Flip}
           />
         </CookiesProvider>
