@@ -2,9 +2,7 @@ const mongoose = require("mongoose");
 
 const connectDatabase = () => {
   mongoose
-    .connect(process.env.DB_URI, {
-      ssl: false, 
-    })
+    .connect(process.env.DB_URI || "mongodb://localhost:27017/goldenstone")
     .then(() => {
       console.log(`MongoDB connected successfully`);
     })

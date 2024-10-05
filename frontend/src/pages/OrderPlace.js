@@ -59,7 +59,8 @@ const OrderPlace = () => {
       });
 
       const options = {
-        key: process.env.REACT_APP_RAZORPAY_API_KEY,
+        key:
+          process.env.REACT_APP_RAZORPAY_API_KEY || "rzp_test_JzOpRtHKzBzhBo",
         amount: amount * 100,
         currency: "INR",
         name: "Royal Crown",

@@ -33,7 +33,7 @@ const OrderConfirm = () => {
   const Proceedtopayment = async (data, order, order_id) => {
     try {
       const options = {
-        key: process.env.RAZORPAY_API_KEY,
+        key: process.env.RAZORPAY_API_KEY || "rzp_test_JzOpRtHKzBzhBo",
         amount: data.order_total_amount,
         currency: "INR",
         name: "Royalcroun",
