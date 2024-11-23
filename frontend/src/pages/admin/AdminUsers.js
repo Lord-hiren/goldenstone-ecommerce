@@ -29,7 +29,7 @@ const AdminUsers = () => {
     error: deleteError,
     isDeleted,
     isUpdated,
-  } = useSelector((state) => state.userDetails);
+  } = useSelector((state) => state.userProfile);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -111,6 +111,7 @@ const AdminUsers = () => {
       dispatch(getAllUsers());
       dispatch({ type: UPDATE_USER_RESET });
     }
+    dispatch(getAllUsers());
   }, [error, dispatch, isDeleted, deleteError, navigate, isUpdated]);
 
   return (

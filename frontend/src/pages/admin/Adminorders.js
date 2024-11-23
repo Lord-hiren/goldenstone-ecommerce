@@ -59,7 +59,7 @@ const Adminorders = () => {
       width: 150,
       renderCell: (params) => (
         <>
-          <IconButton color="info" onClick={() => handleEdit(params.row.id)}>
+          <IconButton color="primary" onClick={() => handleEdit(params.row.id)}>
             <VisibilityRoundedIcon />
           </IconButton>
         </>

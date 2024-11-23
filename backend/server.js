@@ -1,8 +1,7 @@
 require("dotenv").config();
 const app = require("./app");
-const cloudinary = require("cloudinary");
 const connectDatabase = require("./config/database");
-const Razorpay = require("razorpay");
+const https = require("https");
 
 // Handling Uncaught Exception
 process.on("uncaughtException", (err) => {
@@ -16,9 +15,15 @@ connectDatabase();
 
 const port = process.env.PORT || 4000;
 
-const server = app.listen(port, () => {
-  console.log(`Server is working on http://localhost:${port}`);
-});
+if (process.env.NODE_ENV === "PRODUCTION") {
+  https.createServer(options, app).listen(4000, () => {
+    console.log("Server is running on https://royalcrownjewellery.in:4000");
+  });
+} else {
+  const server = app.listen(port, () => {
+    console.log(`Server is working on http://localhost:${port}`);
+  });
+}
 
 // Unhandled Promise Rejection
 process.on("unhandledRejection", (err) => {

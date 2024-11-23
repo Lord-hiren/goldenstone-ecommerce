@@ -67,6 +67,7 @@ exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
 // Get all users (admin)
 exports.getAllUser = catchAsyncErrors(async (req, res, next) => {
   const users = await User.find();
+  console.log(users);
 
   res.status(200).json({
     success: true,
