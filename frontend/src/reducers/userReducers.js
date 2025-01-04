@@ -42,6 +42,9 @@ import {
   GOOGLE_LOGIN_SUCCESS,
   GOOGLE_LOGIN_FAIL,
   CLEAR_ERRORS,
+  ADMIN_LOGIN_REQUEST,
+  ADMIN_LOGIN_SUCCESS,
+  ADMIN_LOGIN_FAIL,
 } from "../constants/userConstants";
 
 export const userReducer = (state = { user: {} }, action) => {
@@ -269,6 +272,34 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
       return {
         ...state,
         error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const adminReducer = (state = { admin: {} }, action) => {
+  switch (action.type) {
+    case ADMIN_LOGIN_REQUEST:
+      return {
+        loading: true,
+        isAuthenticated: false,
+      };
+
+    case ADMIN_LOGIN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isAuthenticated: true,
+      };
+
+    case ADMIN_LOGIN_FAIL:
+      return {
+        ...state,
+        loading: false,
+        isAuthenticated: false,
+        error: action.payload,
       };
 
     default:

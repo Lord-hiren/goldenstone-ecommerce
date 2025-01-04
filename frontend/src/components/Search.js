@@ -27,7 +27,7 @@ const Search = () => {
             display: "flex",
             alignItems: "center",
           }}
-          className="w-100 shadow"
+          className="w-100 "
         >
           <InputBase
             sx={{ flex: 1 }}

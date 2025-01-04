@@ -9,11 +9,13 @@ import {
   ListItemText,
 } from "@mui/material";
 import Metadata from "../components/Metadata";
+import Nav from "../components/Nav";
 
 const TermsAndConditions = () => {
   return (
     <>
       <Metadata title="Royal Crown --Shipping" />
+      <Nav />
       <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
         <Box sx={{ textAlign: "center", mb: 4 }}>
           <Typography variant="h4" component="h1" gutterBottom>

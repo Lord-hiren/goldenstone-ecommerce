@@ -16,49 +16,63 @@ const CartData = ({ props }) => {
   };
   return (
     <>
-      <Accordion className="bg-light">
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1-content"
-          id="panel1-header"
-        >
-          <img src={props.image} className="cart-image mx-1 mx-lg-4" alt="" />
-          {props.name}
-          <span className=" px-2 px-lg-4">{props.price}</span>
-          <span className="ms-auto">
-            <IconButton
-              aria-label="delete"
-              color="error"
-              onClick={() => deleteCartItemHandler(props.product)}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </span>
-        </AccordionSummary>
-        <AccordionDetails>
-          <table className="table w-50">
-            <tr>
-              <td>Name : {props.name}</td>
-              <td>Price : ₹{props.price}</td>
-              <td>Quantity : {props.quantity}</td>
-            </tr>
-          </table>
-          <div>
-            <table className="table w-50">
-              <tr>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Totel price</th>
-              </tr>
-              <tr>
-                <td>{props.quantity}</td>
-                <td>₹{props.price}</td>
-                <td className="fw-bold">₹ {props.quantity * props.price}</td>
-              </tr>
-            </table>
+      <div className="container">
+        <div class="position-relative product-item row mb-4 rounded-lg bg-white pt-3 shadow-sm me-1">
+          <div class="col-12 col-sm-6 col-lg-4 mb-3 mb-sm-3 mb-md-3 md-lg-0">
+            <b class="mb-2 d-block d-xl-none">Product</b>
+            <div class=" d-flex w-100">
+              <figure class="rounded-lg">
+                <img src={props.image} class="rounded" width="60" alt="img" />
+              </figure>
+              <div class="ms-2 w-100">
+                <p class="font-weight-bold text-dark">{props.name}</p>
+                <div class="mt-2">
+                  <small>#{props.product}</small>
+                </div>
+              </div>
+            </div>
           </div>
-        </AccordionDetails>
-      </Accordion>
+          <div class="col-12 col-sm-6 col-lg-2 mb-3 mb-sm-3 mb-md-3 md-lg-0">
+            <b class="mb-2 d-block d-xl-none">Price</b>
+            <div>
+              <span class="font-weight-bold text-primary">
+                ₹{props.price - (props.price * props.discount) / 100}
+              </span>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-3 mb-3 mb-sm-3 mb-md-3 md-lg-0">
+            <b class="mb-2 d-block d-xl-none">Quantity</b>
+            <div class="qty-container">
+              <p className="">{props.quantity}</p>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-3 mb-3 mb-sm-3 mb-md-3 md-lg-0">
+            <b class="mb-2 d-block d-xl-none">Total</b>
+            <span class="font-weight-bold text-primary">
+              ₹ {props.quantity * props.price}
+            </span>
+          </div>
+          <button
+            class="btn btn-primary position-absolute close-cart w-auto"
+            onClick={() => deleteCartItemHandler(props.product)}
+          >
+            <svg
+              stroke="currentColor"
+              fill="none"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              height="20px"
+              width="20px"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
     </>
   );
 };

@@ -15,6 +15,7 @@ import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 import { LOGOUT_SUCCESS } from "../constants/userConstants";
 import logo from "../asetes/img/logo.png";
+import ReorderRoundedIcon from "@mui/icons-material/ReorderRounded";
 
 const pages = [
   { title: "Home", dest: "/" },
@@ -84,6 +85,7 @@ const Nav = () => {
         removeCookie("token");
         dispatch({ type: LOGOUT_SUCCESS });
         toast.success("Logout success");
+        navigate("/");
         break;
       default:
         break;
@@ -99,7 +101,7 @@ const Nav = () => {
   }, [dispatch, error]);
 
   useEffect(() => {
-    if (user && user[0] === undefined && token !== undefined) {
+    if (user?.name === undefined && token !== undefined) {
       try {
         const decoded = jwtDecode(token);
         dispatch(loadUser(decoded.id));
@@ -111,8 +113,8 @@ const Nav = () => {
 
   return (
     <>
-      <nav class="navbar navbar-expand-lg py-0 bg-main">
-        <div class="container bg-nav py-2">
+      <nav className="navbar navbar-expand-lg py-0 bg-main">
+        <div className="container bg-light py-2">
           <img
             src={logo}
             alt="Logo"
@@ -120,7 +122,7 @@ const Nav = () => {
             onClick={() => navigate("/")}
           />
           <button
-            class="navbar-toggler"
+            className="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent"
@@ -128,27 +130,27 @@ const Nav = () => {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span class="navbar-toggler-icon"></span>
+            <ReorderRoundedIcon />
           </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-              <li class="nav-item px-3">
-                <Link class="nav-link " aria-current="page" to="/">
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
+              <li className="nav-item px-3">
+                <Link className="nav-link " aria-current="page" to="/">
                   HOME
                 </Link>
               </li>
-              <li class="nav-item px-3">
-                <Link class="nav-link " aria-current="page" to="/products">
+              <li className="nav-item px-3">
+                <Link className="nav-link " aria-current="page" to="/products">
                   PRODUCTS
                 </Link>
               </li>
-              <li class="nav-item px-3">
-                <Link class="nav-link " aria-current="page" to="/about">
+              <li className="nav-item px-3">
+                <Link className="nav-link " aria-current="page" to="/about">
                   ABOUT US
                 </Link>
               </li>
-              <li class="nav-item px-3">
-                <Link class="nav-link " aria-current="page" to="/cart">
+              <li className="nav-item px-3">
+                <Link className="nav-link " aria-current="page" to="/cart">
                   CART
                 </Link>
               </li>
@@ -187,7 +189,7 @@ const Nav = () => {
             ) : (
               <button
                 type="button"
-                class="login-with-google-btn"
+                className="login-with-google-btn"
                 onClick={() => login()}
               >
                 Sign in with Google

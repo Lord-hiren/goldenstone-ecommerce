@@ -35,7 +35,7 @@ const AdminUsers = () => {
     if (!isAuthenticated) {
       navigate("/");
     }
-  }, [dispatch, isAuthenticated, navigate]);
+  }, [isAuthenticated]);
 
   const handleDelete = (id) => {
     dispatch(deleteUser(id));

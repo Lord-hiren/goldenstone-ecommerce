@@ -17,6 +17,7 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import Slider from "@mui/material/Slider";
 import { useParams } from "react-router-dom";
 import Search from "../components/Search";
+import Nav from "../components/Nav";
 
 const Products = () => {
   const params = useParams();
@@ -58,6 +59,7 @@ const Products = () => {
       ) : (
         <>
           <Metadata title="Royal Crown --Products" />
+          <Nav />
           <div className="container-fluid main-bg">
             <div className="container py-1">
               <Search />

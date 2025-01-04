@@ -8,7 +8,7 @@ const Footer = () => {
   let currentYear = currentDate.getFullYear();
   return (
     <>
-      <div className="container-fluid black p-4">
+      {/* <div className="container-fluid black p-4">
         <div className="container">
           <div className="row">
             <div className="col-lg-4 col-md-4 col-sm-12 py-5">
@@ -101,7 +101,70 @@ const Footer = () => {
             © {currentYear} All Right Reserved
           </p>
         </div>
-      </div>
+      </div> */}
+
+      <footer class="mt-100">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 mb-4 mb-sm-4 mb-md-4 mb-lg-0">
+              <p class="footer_title">About Information</p>
+              <div class="mt-4 pr-5">
+                <p class="address">
+                  Widgetify Inc, 456 Gadget Avenue, Techtown, TX 67890, United
+                  States of America
+                </p>
+                <p class="phone m-0">
+                  Call Us:<a href="tel:(987) 654-3210"> (987) 654-3210</a>
+                </p>
+                <p class="email m-0 mt-2">
+                  <a href="mailto:royalcrown2525@gmail.com">
+                    royalcrown2525@gmail.com
+                  </a>
+                </p>
+              </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 mb-4 mb-sm-4 mb-md-4 mb-lg-0">
+              <div class="footer_menu">
+                <p class="footer_title">Quick Links</p>
+                <ul class="m-0 p-0 list-unstyled">
+                  <li>
+                    <a href="#">About Us</a>
+                  </li>
+                  <li>
+                    <a href="#">Return Policy</a>
+                  </li>
+                  <li>
+                    <a href="#">Privacy Policy</a>
+                  </li>
+                  <li>
+                    <a href="#">FAQ</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 mb-4 mb-sm-4 mb-md-4 mb-lg-0">
+              <div class="footer_menu">
+                <p class="footer_title">Contact Us</p>
+                <ul class="m-0 p-0 list-unstyled">
+                  <li>
+                    <a href="#">About Us</a>
+                  </li>
+                  <li>
+                    <a href="#">Return Policy</a>
+                  </li>
+                  <li>
+                    <a href="#">Privacy Policy</a>
+                  </li>
+                  <li>
+                    <a href="#">FAQ</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <hr class="m-0 mt-2" />
+        </div>
+      </footer>
     </>
   );
 };

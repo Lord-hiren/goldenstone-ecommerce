@@ -2,6 +2,7 @@ const ErrorHander = require("../middleware/error");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const User = require("../models/userModel");
 const sendToken = require("../utils/jwtToken");
+const { generateAdminToken } = require("../utils/adminToken");
 
 // Google Login/Register User
 exports.googleLogin = catchAsyncErrors(async (req, res, next) => {
@@ -67,7 +68,6 @@ exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
 // Get all users (admin)
 exports.getAllUser = catchAsyncErrors(async (req, res, next) => {
   const users = await User.find();
-  console.log(users);
 
   res.status(200).json({
     success: true,
@@ -124,4 +124,36 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
     success: true,
     message: "User Deleted Successfully",
   });
+});
+
+// ADMIN LOGIN
+exports.adminLogin = catchAsyncErrors(async (req, res, next) => {
+  const { userName, password } = req.body;
+
+  if (!userName) {
+    return next(new ErrorHander("Username is required", 400));
+  }
+
+  if (!password) {
+    return next(new ErrorHander("Password is required", 400));
+  }
+
+  const Username = process.env.ADMIN_USER_NAME;
+  const Password = process.env.ADMIN_PASSWORD;
+
+  if (userName !== Username) {
+    return next(new ErrorHander("Please provide valid username", 401));
+  }
+
+  if (password !== Password) {
+    return next(new ErrorHander("Please provide valid password", 403));
+  }
+
+  const adminToken = await generateAdminToken([
+    { user_id: 1, user_name: userName },
+  ]);
+
+  if (adminToken) {
+    return res.status(200).json({ success: true, token: adminToken });
+  }
 });

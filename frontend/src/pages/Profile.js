@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { myOrders } from "../actions/orderAction";
 import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
 import Loader from "../components/Loader";
+import Nav from "../components/Nav";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ const Profile = () => {
           {isAuthenticated === true ? (
             <>
               <Metadata title="Royal Crown --Profile" />
+              <Nav />
               <div className="container-fluid main-bg">
                 <div className="container py-1">
                   <div className="white-card my-2">
@@ -66,7 +68,7 @@ const Profile = () => {
                         {orders ? (
                           <>
                             <div className="overflow-auto">
-                              <table class="table">
+                              <table className="table">
                                 <thead>
                                   <tr>
                                     <th scope="col">#</th>

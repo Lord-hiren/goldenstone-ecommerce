@@ -8,6 +8,7 @@ import { createOrder } from "../actions/orderAction";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 import axios from "axios";
+import Nav from "../components/Nav";
 
 const OrderPlace = () => {
   const navigate = useNavigate();
@@ -59,8 +60,7 @@ const OrderPlace = () => {
       });
 
       const options = {
-        key:
-          process.env.REACT_APP_RAZORPAY_API_KEY || "rzp_test_JzOpRtHKzBzhBo",
+        key: process.env.REACT_APP_RAZORPAY_API_KEY,
         amount: amount * 100,
         currency: "INR",
         name: "Royal Crown",
@@ -113,6 +113,7 @@ const OrderPlace = () => {
       ) : (
         <>
           <Metadata title="Royal Crown --Payment" />
+          <Nav />
           <div className="container-fluid main-bg">
             <div className="container py-1">
               <div className="white-card my-2">

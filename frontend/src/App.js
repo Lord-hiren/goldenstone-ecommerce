@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./App.scss";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -29,7 +28,6 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Nav />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />

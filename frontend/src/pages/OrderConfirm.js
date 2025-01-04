@@ -11,6 +11,7 @@ import {
   Button,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Nav from "../components/Nav";
 
 const OrderConfirm = () => {
   const navigate = useNavigate();
@@ -65,6 +66,7 @@ const OrderConfirm = () => {
           {isAuthenticated ? (
             <>
               <Metadata title="Royal Crown --Order confirm" />
+              <Nav />
               <div className="container-fluid main-bg">
                 <div className="container py-1">
                   <div className="white-card my-2">

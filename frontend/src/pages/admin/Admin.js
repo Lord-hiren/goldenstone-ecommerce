@@ -23,7 +23,7 @@ const Admin = () => {
                   <div className="col-lg-3">
                     <div className="card shadow border-0 rounded-4 p-3">
                       <div className="card-body">
-                        <p class="card-text text-center">Total users</p>
+                        <p className="card-text text-center">Total users</p>
                         <h5 className="card-title text-center green">50</h5>
                       </div>
                     </div>
@@ -31,7 +31,7 @@ const Admin = () => {
                   <div className="col-lg-3">
                     <div className="card shadow border-0 rounded-4 p-3">
                       <div className="card-body">
-                        <p class="card-text text-center">Total products</p>
+                        <p className="card-text text-center">Total products</p>
                         <h5 className="card-title text-center ">
                           <span className="green">70</span> /{" "}
                           <span className="red">14</span>
@@ -42,7 +42,7 @@ const Admin = () => {
                   <div className="col-lg-3">
                     <div className="card shadow border-0 rounded-4 p-3">
                       <div className="card-body">
-                        <p class="card-text text-center">Total orders</p>
+                        <p className="card-text text-center">Total orders</p>
                         <h5 className="card-title text-center ">
                           <span className="green">70</span> /{" "}
                           <span className="red">14</span>
@@ -53,7 +53,7 @@ const Admin = () => {
                   <div className="col-lg-3">
                     <div className="card shadow border-0 rounded-4 p-3">
                       <div className="card-body">
-                        <p class="card-text text-center">Total payments</p>
+                        <p className="card-text text-center">Total payments</p>
                         <h5 className="card-title text-center green">
                           ₹ 50000
                         </h5>

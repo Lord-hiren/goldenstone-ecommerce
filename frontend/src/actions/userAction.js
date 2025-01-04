@@ -37,6 +37,9 @@ import {
   GOOGLE_LOGIN_REQUEST,
   GOOGLE_LOGIN_SUCCESS,
   GOOGLE_LOGIN_FAIL,
+  ADMIN_LOGIN_REQUEST,
+  ADMIN_LOGIN_SUCCESS,
+  ADMIN_LOGIN_FAIL,
   CLEAR_ERRORS,
 } from "../constants/userConstants";
 import axios from "axios";
@@ -193,6 +196,24 @@ export const deleteUser = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: DELETE_USER_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+// ADMIN LOGIN
+export const adminLogin = (adminData) => async (dispatch) => {
+  try {
+    dispatch({ type: ADMIN_LOGIN_REQUEST });
+    const { data } = await axios.post(
+      `${process.env.REACT_APP_API}/api/v1/admin/login`,
+      adminData
+    );
+
+    dispatch({ type: ADMIN_LOGIN_SUCCESS });
+  } catch (error) {
+    dispatch({
+      type: ADMIN_LOGIN_FAIL,
       payload: error.response.data.message,
     });
   }

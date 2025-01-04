@@ -1,7 +1,7 @@
-require("dotenv").config();
 const app = require("./app");
 const connectDatabase = require("./config/database");
 const https = require("https");
+const fs = require("fs");
 
 // Handling Uncaught Exception
 process.on("uncaughtException", (err) => {
@@ -13,10 +13,18 @@ process.on("uncaughtException", (err) => {
 // Connecting to database
 connectDatabase();
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT;
 
 if (process.env.NODE_ENV === "PRODUCTION") {
-  https.createServer(options, app).listen(4000, () => {
+  const options = {
+    key: fs.readFileSync(
+      "/etc/letsencrypt/live/royalcrownjewellery.in/privkey.pem"
+    ),
+    cert: fs.readFileSync(
+      "/etc/letsencrypt/live/royalcrownjewellery.in/fullchain.pem"
+    ),
+  };
+  https.createServer(options, app).listen(port, () => {
     console.log("Server is running on https://royalcrownjewellery.in:4000");
   });
 } else {

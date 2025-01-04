@@ -5,6 +5,7 @@ import { faGhost } from "@fortawesome/free-solid-svg-icons";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import Metadata from "../components/Metadata";
+import Nav from "../components/Nav";
 
 const Error = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const Error = () => {
   return (
     <>
       <Metadata title="Royal Crown --Error" />
+      <Nav />
       <div className="main">
         <h1 className="h1">
           4
