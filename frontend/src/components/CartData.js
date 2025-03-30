@@ -16,7 +16,7 @@ const CartData = ({ props }) => {
   };
   return (
     <>
-      <div className="container">
+      <div className="container-fluid">
         <div class="position-relative product-item row mb-4 rounded-lg bg-white pt-3 shadow-sm me-1">
           <div class="col-12 col-sm-6 col-lg-4 mb-3 mb-sm-3 mb-md-3 md-lg-0">
             <b class="mb-2 d-block d-xl-none">Product</b>
@@ -53,7 +53,7 @@ const CartData = ({ props }) => {
             </span>
           </div>
           <button
-            class="btn btn-primary position-absolute close-cart w-auto"
+            class="btn btn-primary position-absolute close-cart w-auto end-0 top-0"
             onClick={() => deleteCartItemHandler(props.product)}
           >
             <svg

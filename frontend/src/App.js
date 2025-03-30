@@ -1,111 +1,124 @@
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import "./App.scss";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+// Layout
+import Layout from "./components/layout/Layout";
+
+// Pages
 import Home from "./pages/Home";
-import Nav from "./components/Nav";
-import Error from "./pages/Error";
-import Admin from "./pages/admin/Admin";
-import AdminUsers from "./pages/admin/AdminUsers";
-import AdminProducts from "./pages/admin/AdminProducts";
-import AddNewProducts from "./pages/admin/AddNewProducts";
-import AdminEditproduct from "./pages/admin/AdminEditproduct";
-import Footer from "./components/Footer";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
+import OrderDetails from "./pages/OrderDetails";
+import Profile from "./pages/Profile";
+import About from "./pages/AboutUs";
+// import Contact from "./pages/";
+// import Categories from "./pages/Categories";
 import Shipping from "./pages/Shipping";
 import OrderConfirm from "./pages/OrderConfirm";
 import OrderPlace from "./pages/OrderPlace";
-import Profile from "./pages/Profile";
+import Error from "./pages/Error";
+
+// Protected Route
 import ProtectedRoute from "./components/route/ProtectedRoute";
-import Adminorders from "./pages/admin/Adminorders";
-import AdminOrderDetails from "./pages/admin/AdminOrderDetails";
-import TermsAndConditions from "./pages/TermsAndConditions";
-import RefundPolicy from "./pages/RefundPolicy";
-import AboutUs from "./pages/AboutUs";
+
+// Styles
+import "./App.scss";
+import Footer from "./components/Footer";
 
 function App() {
+  useEffect(() => {
+    // Initialize AOS
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 50,
+      easing: "ease-out-cubic",
+    });
+  }, []);
+
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/products/:keyword" element={<Products />} />
-          <Route path="/product/detail/:id" element={<ProductDetail />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/shipping" element={<Shipping />} />
-          <Route path="/order/confirm" element={<OrderConfirm />} />
-          <Route path="/payment" element={<OrderPlace />} />
-          <Route path="/profile" element={<Profile />} />
+    <Router>
+      <Layout>
+        <AnimatePresence mode="wait">
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/products/:keyword" element={<Products />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/about" element={<About />} />
+            {/* <Route path="/contact" element={<Contact />} /> */}
+            {/* <Route path="/categories" element={<Categories />} /> */}
 
-          <Route path="/t&c" element={<TermsAndConditions />} />
-          <Route path="/refundpolicy" element={<RefundPolicy />} />
-          <Route path="/about" element={<AboutUs />} />
+            {/* Protected Routes */}
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/shipping"
+              element={
+                <ProtectedRoute>
+                  <Shipping />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/order/confirm"
+              element={
+                <ProtectedRoute>
+                  <OrderConfirm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/order/:id"
+              element={
+                <ProtectedRoute>
+                  <OrderDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/order/success"
+              element={
+                <ProtectedRoute>
+                  <OrderPlace />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/v1/admin/dashboard"
-            element={
-              <ProtectedRoute>
-                <Admin />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/v1/admin/users"
-            element={
-              <ProtectedRoute>
-                <AdminUsers />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/v1/admin/products"
-            element={
-              <ProtectedRoute>
-                <AdminProducts />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/v1/admin/add/products"
-            element={
-              <ProtectedRoute>
-                <AddNewProducts />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/v1/admin/edit/products/:id"
-            element={
-              <ProtectedRoute>
-                <AdminEditproduct />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/v1/admin/orders"
-            element={
-              <ProtectedRoute>
-                <Adminorders />
-              </ProtectedRoute>
-            }
-          />
+            {/* 404 Route */}
+            <Route path="*" element={<Error />} />
+          </Routes>
+          <Footer />
+        </AnimatePresence>
 
-          <Route
-            path="/v1/admin/order/details/:id"
-            element={
-              <ProtectedRoute>
-                <AdminOrderDetails />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route path="*" element={<Error />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
-    </>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+      </Layout>
+    </Router>
   );
 }
 

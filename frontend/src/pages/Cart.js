@@ -34,7 +34,10 @@ const Cart = () => {
         <>
           <Metadata title="Royal Crown -- Cart" />
           <Nav />
-          <div className="container-fluid main-bg">
+          <div
+            className="container-fluid main-bg"
+            style={{ marginTop: "5rem" }}
+          >
             <div className="container pt-4">
               <div className="white-card my-3">
                 <h3 className="py-2 font-2 text-primary">My cart</h3>
@@ -77,7 +80,7 @@ const Cart = () => {
                             </div>
                             <div class="col-12 col-lg-5  pl-lg-4">
                               <div class="delivery-summary">
-                                <div class="mb-4 box-title d-flex flex-wrap align-items-center justify-content-between border-bottom-2  pb-1">
+                                <div class="mb-4 box-title d-flex flex-wrap align-items-center justify-content-between border-bottom-2 pb-1">
                                   <h1 class="h4 font-weight-bold text-dark position-relative m-0 mb-1 title-under-line">
                                     Order Total
                                   </h1>
@@ -100,7 +103,7 @@ const Cart = () => {
                   </button>
                 </form> */}
                                 <div class="mt-4 bg-white ">
-                                  <ul class="list-unstyled">
+                                  <ul class="list-unstyled px-3 pt-3">
                                     {/* <li class="d-flex justify-content-between">
                       Items <span class="text-dark">$690.00</span>
                     </li> */}

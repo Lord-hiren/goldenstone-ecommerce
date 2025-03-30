@@ -67,7 +67,10 @@ const OrderConfirm = () => {
             <>
               <Metadata title="Royal Crown --Order confirm" />
               <Nav />
-              <div className="container-fluid main-bg">
+              <div
+                className="container-fluid main-bg"
+                style={{ marginTop: "5rem" }}
+              >
                 <div className="container py-1">
                   <div className="white-card my-2">
                     <Stappes activeStep={1} />

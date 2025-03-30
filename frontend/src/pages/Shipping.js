@@ -234,7 +234,7 @@ const Shipping = () => {
             </div>
           </div> */}
 
-          <section class="checkout-section">
+          <section class="checkout-section" style={{ marginTop: "7rem" }}>
             <div class="container mt-50 px-4">
               <div class="row">
                 <div class="col-lg-7">
@@ -267,7 +267,7 @@ const Shipping = () => {
                     </div>
                     <div class="delivery-address">
                       <div class="form-row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-6 col-12">
                           <input
                             type="text"
                             class="form-control"
@@ -276,7 +276,7 @@ const Shipping = () => {
                             onChange={(e) => setPhoneNo(e.target.value)}
                           />
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-6 col-12">
                           <input
                             type="text"
                             class="form-control"
@@ -300,7 +300,7 @@ const Shipping = () => {
                               ))}
                           </select>
                         </div> */}
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-6 col-12">
                           <input
                             type="text"
                             class="form-control"
@@ -309,7 +309,7 @@ const Shipping = () => {
                             onChange={(e) => setCity(e.target.value)}
                           />
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-6 col-12">
                           <select
                             className="form-control"
                             value={state}
@@ -324,7 +324,7 @@ const Shipping = () => {
                               ))}
                           </select>
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-6 col-12">
                           <input
                             type="text"
                             class="form-control"
@@ -342,7 +342,7 @@ const Shipping = () => {
                         </h1>
                       </div>
                       <div class="delivery-option-list">
-                        <div class="position-relative d-flex cursor-pointer align-items-center rounded-lg bg-white shadow-sm custom-checkbox">
+                        <div class="position-relative d-flex cursor-pointer align-items-center rounded-lg bg-white shadow-sm custom-checkbox px-3">
                           <label
                             class="d-flex w-100 cursor-pointer m-0 align-items-center justify-content-between py-3 pl-4 pr-4"
                             for="radio-standard"

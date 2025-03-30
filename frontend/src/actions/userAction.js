@@ -78,6 +78,8 @@ export const googleLogin = (email, name, profile_pic) => async (dispatch) => {
       config
     );
 
+    console.log(data);
+
     // Set the token in cookies
     Cookies.set("token", data.token, { expires: 5 });
     toast.success("Login successfule");

@@ -36,8 +36,8 @@ const Profile = () => {
             <>
               <Metadata title="Royal Crown --Profile" />
               <Nav />
-              <div className="container-fluid main-bg">
-                <div className="container py-1">
+              <div className="container-fluid main-bg pt-5 mt-5">
+                <div className="container py-1 mt-5">
                   <div className="white-card my-2">
                     <div className="row">
                       <div className="col-lg-3 col-md-4 col-sm-6 col-8 m-auto">

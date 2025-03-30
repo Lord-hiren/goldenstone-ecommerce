@@ -1,0 +1,176 @@
+@import "../theme.scss";
+
+.products-page {
+  min-height: 80vh;
+  padding: 2rem 0;
+  background: linear-gradient(to bottom, rgba($light, 0.5), rgba($light, 0.8));
+
+  h1 {
+    color: $secondary;
+    font-weight: 600;
+    margin-bottom: 0;
+  }
+}
+
+// Filter Toggle Button
+.filter-toggle {
+  background: $white !important;
+  border: 1px solid rgba($secondary, 0.1) !important;
+  color: $secondary !important;
+  transition: $transition-base !important;
+
+  &:hover {
+    background: rgba($primary, 0.1) !important;
+    color: $primary !important;
+  }
+}
+
+// Sort Dropdown
+.MuiSelect-select {
+  background: $white !important;
+  padding: 0.5rem 1rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  min-width: 180px !important;
+  color: $secondary !important;
+  font-family: $font-family-base !important;
+  font-size: 0.9rem !important;
+
+  &:focus {
+    background: $white !important;
+  }
+}
+
+.MuiMenuItem-root {
+  font-family: $font-family-base !important;
+  color: $secondary !important;
+  font-size: 0.9rem !important;
+
+  &:hover {
+    background: rgba($primary, 0.1) !important;
+    color: $primary !important;
+  }
+
+  &.Mui-selected {
+    background: rgba($primary, 0.1) !important;
+    color: $primary !important;
+
+    &:hover {
+      background: rgba($primary, 0.15) !important;
+    }
+  }
+}
+
+// Pagination
+.pagination {
+  display: flex;
+  gap: 0.5rem;
+
+  .page-item {
+    .page-link {
+      width: 40px;
+      height: 40px;
+      @include flex-center;
+      border-radius: 50%;
+      border: none;
+      background: $white;
+      color: $secondary;
+      font-weight: 500;
+      transition: $transition-base;
+      padding: 0;
+
+      &:hover {
+        background: rgba($primary, 0.1);
+        color: $primary;
+      }
+    }
+
+    &.active .page-link {
+      background: $primary;
+      color: $white;
+
+      &:hover {
+        background: darken($primary, 5%);
+      }
+    }
+  }
+}
+
+// No Products Message
+.no-products {
+  text-align: center;
+  padding: 4rem 0;
+
+  h3 {
+    color: $secondary;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: rgba($secondary, 0.6);
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}
+
+// Responsive Design
+@media (max-width: $breakpoint-lg) {
+  .products-page {
+    padding: 1.5rem 0;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .products-page {
+    padding: 1rem 0;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  .pagination {
+    .page-item {
+      .page-link {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .products-page {
+    padding: 0.5rem 0;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .MuiSelect-select {
+    min-width: 150px !important;
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}

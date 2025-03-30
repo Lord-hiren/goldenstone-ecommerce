@@ -1,3 +1,6 @@
+import { IconButton } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 import React, { useEffect, useState } from "react";
 import Metadata from "../components/Metadata";
 import { useDispatch, useSelector } from "react-redux";
@@ -89,8 +92,8 @@ const ProductDetail = () => {
           <Metadata title="Royal Crown --Product Details" />
           <Nav />
 
-          <div class="product-details">
-            <div class="container-fluid">
+          <div class="product-details mt-5">
+            <div class="container-fluid mt-5 pt-5">
               <section class="mt-5">
                 <div class="row">
                   <div class="col-12 col-lg-5 px-2 px-sm-2 px-md-2 px-lg-0">
@@ -189,120 +192,41 @@ const ProductDetail = () => {
                       <div class="mb-3 border-bottom pb-3">
                         <p class="text-truncate-3">{product?.description}</p>
                       </div>
-                      {/* <div class="my-3 size-section">
-                        <span class="font-weight-bold text-secondary">
-                          Size:
-                        </span>
-                        <div class="size-custom-radios mt-2">
-                          <div class="size-item">
-                            <input
-                              type="radio"
-                              id="size-s"
-                              name="size"
-                              value="s"
-                              checked=""
-                            />
-                            <label for="size-s">
-                              <span>S</span>
-                            </label>
-                          </div>
-                          <div class="size-item">
-                            <input
-                              type="radio"
-                              id="size-m"
-                              name="size"
-                              value="m"
-                            />
-                            <label for="size-m">
-                              <span>M</span>
-                            </label>
-                          </div>
-                          <div class="size-item">
-                            <input
-                              type="radio"
-                              id="size-l"
-                              name="size"
-                              value="l"
-                            />
-                            <label for="size-l">
-                              <span>L</span>
-                            </label>
-                          </div>
-                          <div class="size-item">
-                            <input
-                              type="radio"
-                              id="size-xl"
-                              name="size"
-                              value="l"
-                            />
-                            <label for="size-xl">
-                              <span>XL</span>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="my-3 color-section">
-                        <span class="font-weight-bold text-secondary">
-                          Colors:
-                        </span>
-                        <div class="custom-radios mt-2">
-                          <div class="color-item">
-                            <input
-                              type="radio"
-                              id="color-1"
-                              name="color"
-                              value="#000"
-                              checked=""
-                            />
-                            <label for="color-1">
-                              <span style={{ color: "#000;" }}>
-                                <img
-                                  src="./assets/images/icon/check-icn.svg"
-                                  alt="Checked Icon"
-                                />
-                              </span>
-                            </label>
-                          </div>
-                          <div class="color-item">
-                            <input
-                              type="radio"
-                              id="color-2"
-                              name="color"
-                              value="#f1c40f"
-                            />
-                            <label for="color-2">
-                              <span style={{ color: "#f1c40f;" }}>
-                                <img
-                                  src="./assets/images/icon/check-icn.svg"
-                                  alt="Checked Icon"
-                                />
-                              </span>
-                            </label>
-                          </div>
-                          <div class="color-item">
-                            <input
-                              type="radio"
-                              id="color-3"
-                              name="color"
-                              value="#3e74c3c"
-                            />
-                            <label for="color-3">
-                              <span style={{ color: "#e74c3c;" }}>
-                                <img
-                                  src="./assets/images/icon/check-icn.svg"
-                                  alt="Checked Icon"
-                                />
-                              </span>
-                            </label>
-                          </div>
-                        </div>
-                      </div> */}
                       <div class="my-3">
                         <span class="font-weight-bold text-secondary">
                           Quantity:
                         </span>
                         <div class="d-flex mt-2">
-                          <div class="qty-container">
+                          <div className="product-actions">
+                            <div className="quantity-selector">
+                              <IconButton
+                                onClick={() => {
+                                  if (num > 1) {
+                                    setNum(num - 1);
+                                    setQuantity(num - 1);
+                                  }
+                                }}
+                                disabled={quantity <= 1}
+                              >
+                                <RemoveIcon />
+                              </IconButton>
+                              <span className="quantity user-select-none">
+                                {quantity}
+                              </span>
+                              <IconButton
+                                onClick={() => {
+                                  if (num < 20) {
+                                    setNum(num + 1);
+                                    setQuantity(num + 1);
+                                  }
+                                }}
+                                disabled={quantity >= product.stock}
+                              >
+                                <AddIcon />
+                              </IconButton>
+                            </div>
+                          </div>
+                          {/* <div class="qty-container">
                             <button
                               class="qty-btn-minus count-decreament"
                               type="button"
@@ -333,7 +257,7 @@ const ProductDetail = () => {
                             >
                               +
                             </button>
-                          </div>
+                          </div> */}
                           <div>
                             <a
                               href="cart.html"

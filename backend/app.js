@@ -4,43 +4,79 @@ const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
-const fileUpload = require("express-fileupload");
 const path = require("path");
-
 const errorMiddleware = require("./middleware/error");
 
+app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(fileUpload());
 app.use("/images", express.static(path.join(__dirname, "../images")));
-app.use(express.json({ limit: "20mb" }));
-app.use(express.urlencoded({ limit: "20mb", extended: true }));
 
-// Allow only requests from http://localhost:3000
+// Ensure product image directory exists
+const productImgDir = path.join(__dirname, "../images/productimg");
+if (!require("fs").existsSync(productImgDir)) {
+  require("fs").mkdirSync(productImgDir, { recursive: true });
+}
+
+// Configure CORS for frontend and admin panel
 app.use(
   cors({
-    origin: "*",
+    origin: [
+      "http://localhost:3000", // Frontend
+      "http://localhost:3005", // Admin Panel
+    ],
+    credentials: true, // Important for cookies
     optionsSuccessStatus: 200,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "x-auth",
+      "Access-Control-Allow-Credentials",
+    ],
   })
 );
+
+// Enable pre-flight requests for all routes
+app.options("*", cors());
 
 // Route Imports
 const product = require("./routes/productRoute");
 const user = require("./routes/userRoute");
 const order = require("./routes/orderRoute");
 const paymentRoutes = require("./routes/paymentRoutes");
+const dashboard = require("./routes/dashboardRoute");
+const event = require("./routes/eventRoute");
 
+// API Routes
 app.use("/api/v1", product);
 app.use("/api/v1", user);
 app.use("/api/v1", order);
-// app.use("/api/v1", payment);
+app.use("/api/v1/admin/dashboard", dashboard);
+app.use("/api/v1", event);
 app.use("/api", paymentRoutes);
 
-app.use(express.static(path.join(__dirname, "../frontend/build")));
-
-if (process.env.NODE_ENV === "PRODUCTION") {
-  app.get("*", (req, res) => {
+// Serve frontend in production
+if (process.env.NODE_ENV === "production") {
+  // Serve frontend
+  app.use(express.static(path.join(__dirname, "../frontend/build")));
+  app.get("/", (req, res) => {
     res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
+  });
+
+  // Serve admin panel
+  app.use("/admin", express.static(path.join(__dirname, "../admin/build")));
+  app.get("/admin/*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../admin/build/index.html"));
+  });
+
+  // Handle other routes
+  app.get("*", (req, res) => {
+    if (req.url.startsWith("/admin")) {
+      res.sendFile(path.resolve(__dirname, "../admin/build/index.html"));
+    } else {
+      res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
+    }
   });
 }
 

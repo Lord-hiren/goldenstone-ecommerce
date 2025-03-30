@@ -3,36 +3,38 @@ const ErrorHander = require("../utils/errorhander");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ApiFeatures = require("../utils/apifeatures");
 
-// Create product
+// Create product -- Admin
 exports.createProduct = catchAsyncErrors(async (req, res, next) => {
-  const { name, description, price, category, stock, images } = req.body;
+  try {
+    const { name, description, price, category, stock } = req.body;
+    let images = [];
 
-  if (!images || (Array.isArray(images) && images.length === 0)) {
-    return next(new ErrorHander("Please provide product images", 400));
+    if (req.files && req.files.length > 0) {
+      images = req.files.map((file) => ({
+        public_id: file.filename,
+        url: `http://localhost:4000/images/productimg/${file.filename}`,
+      }));
+    }
+
+    const productData = {
+      name,
+      description,
+      price: Number(price),
+      category,
+      stock: Number(stock),
+      images,
+      user: req.user ? req.user.id : null,
+    };
+
+    const product = await Product.create(productData);
+
+    res.status(201).json({
+      success: true,
+      product,
+    });
+  } catch (error) {
+    return next(new ErrorHander(error.message, 500));
   }
-
-  // Normalize images to be an array
-  const normalizedImages = Array.isArray(images) ? images : [images];
-
-  const imagesLinks = normalizedImages.map((image) => ({
-    url: image,
-  }));
-
-  const productData = {
-    name,
-    description,
-    price,
-    category,
-    stock,
-    images: imagesLinks,
-  };
-
-  const product = await Product.create(productData);
-
-  res.status(201).json({
-    success: true,
-    product,
-  });
 });
 
 // Get All Product
@@ -80,54 +82,49 @@ exports.getProductDetails = catchAsyncErrors(async (req, res, next) => {
 });
 
 // Update Product -- Admin
-
 exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
-  let product = await Product.findById(req.params.id);
+  try {
+    let product = await Product.findById(req.params.id);
 
-  if (!product) {
-    return next(new ErrorHander("Product not found", 404));
+    if (!product) {
+      return next(new ErrorHander("Product not found", 404));
+    }
+
+    const { name, description, price, category, stock, discount, trending } =
+      req.body;
+
+    const updatedData = {
+      name,
+      description,
+      price: Number(price),
+      category,
+      stock: Number(stock),
+      discount: discount ? Number(discount) : 0,
+      trending: trending === "true",
+    };
+
+    if (req.files && req.files.length > 0) {
+      // Delete old images from filesystem if needed
+      // Add new images
+      updatedData.images = req.files.map((file) => ({
+        public_id: file.filename,
+        url: `http://localhost:4000/images/productimg/${file.filename}`,
+      }));
+    }
+
+    product = await Product.findByIdAndUpdate(req.params.id, updatedData, {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    });
+
+    res.status(200).json({
+      success: true,
+      product,
+    });
+  } catch (error) {
+    return next(new ErrorHander(error.message, 500));
   }
-
-  const {
-    name,
-    description,
-    price,
-    category,
-    stock,
-    images,
-    discount,
-    trending,
-  } = req.body;
-
-  const updatedData = {
-    name,
-    description,
-    price,
-    category,
-    stock,
-    discount,
-    trending,
-  };
-
-  const normalizedImages = Array.isArray(images) ? images : [images];
-
-  if (images && images.length > 0) {
-    const imagesLinks = normalizedImages.map((image) => ({
-      url: image,
-    }));
-    updatedData.images = imagesLinks;
-  }
-
-  product = await Product.findByIdAndUpdate(req.params.id, updatedData, {
-    new: true,
-    runValidators: true,
-    useFindAndModify: false,
-  });
-
-  res.status(200).json({
-    success: true,
-    product,
-  });
 });
 
 // Delete Product

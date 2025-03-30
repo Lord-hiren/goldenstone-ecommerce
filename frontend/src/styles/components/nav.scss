@@ -1,0 +1,197 @@
+@import "../theme.scss";
+
+.navbar {
+  padding: 1rem 0;
+  background: rgba($white, 0.98);
+  backdrop-filter: blur(10px);
+  transition: $transition-smooth;
+  z-index: 1000;
+
+  &.scrolled {
+    padding: 0.5rem 0;
+    box-shadow: 0 2px 10px rgba($black, 0.1);
+
+    .nav-logo {
+      height: 40px;
+    }
+  }
+}
+
+.nav-wrapper {
+  @include flex-between;
+  width: 100%;
+}
+
+.nav-logo {
+  height: 50px;
+  transition: $transition-base;
+}
+
+.nav-menu {
+  @include flex-center;
+  gap: 2rem;
+}
+
+.nav-link {
+  color: $secondary;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+  position: relative;
+  padding: 0.5rem 0;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: $primary;
+    transition: $transition-base;
+  }
+
+  &:hover {
+    color: $primary;
+
+    &::after {
+      width: 100%;
+    }
+  }
+
+  &.active {
+    color: $primary;
+
+    &::after {
+      width: 100%;
+    }
+  }
+}
+
+.nav-icons {
+  @include flex-center;
+  gap: 1rem;
+}
+
+.nav-icon-btn {
+  background: none;
+  border: none;
+  color: $secondary;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: $transition-base;
+  position: relative;
+
+  &:hover {
+    color: $primary;
+    transform: translateY(-2px);
+  }
+}
+
+.cart-icon {
+  .cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: $primary;
+    color: $white;
+    font-size: 0.7rem;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    @include flex-center;
+  }
+}
+
+.search-bar {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  padding: 1rem;
+  background: rgba($white, 0.98);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba($black, 0.1);
+
+  input {
+    max-width: 600px;
+    margin: 0 auto;
+    display: block;
+    border-radius: 30px;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid rgba($primary, 0.2);
+    transition: $transition-base;
+
+    &:focus {
+      border-color: $primary;
+      box-shadow: 0 0 0 4px rgba($primary, 0.1);
+    }
+  }
+}
+
+.mobile-menu {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 80px);
+  background: rgba($white, 0.98);
+  backdrop-filter: blur(10px);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  z-index: 999;
+
+  .mobile-link {
+    color: $secondary;
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba($secondary, 0.1);
+    transition: $transition-base;
+
+    &:hover {
+      color: $primary;
+      padding-left: 1rem;
+      border-bottom-color: $primary;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: $breakpoint-lg) {
+  .navbar {
+    padding: 0.5rem 0;
+
+    .nav-logo {
+      height: 40px;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .nav-icon-btn {
+    font-size: 1rem;
+  }
+}
+
+// Animation Classes
+.nav-appear {
+  animation: navAppear 0.3s ease-out forwards;
+}
+
+@keyframes navAppear {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

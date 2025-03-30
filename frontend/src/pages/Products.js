@@ -1,35 +1,47 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import {
+  Slider,
+  FormControl,
+  Select,
+  MenuItem,
+  Checkbox,
+  FormControlLabel,
+  IconButton,
+} from "@mui/material";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import SortIcon from "@mui/icons-material/Sort";
+import CloseIcon from "@mui/icons-material/Close";
+
+import { clearErrors, getProduct } from "../actions/productActions";
 import ProductsCard from "../components/ProductsCard";
 import Metadata from "../components/Metadata";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import { clearErrors, getProduct } from "../actions/productActions";
 import Loader from "../components/Loader";
-import {
-  Drawer,
-  IconButton,
-  InputBase,
-  Pagination,
-  Paper,
-  Tooltip,
-} from "@mui/material";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import Slider from "@mui/material/Slider";
-import { useParams } from "react-router-dom";
-import Search from "../components/Search";
-import Nav from "../components/Nav";
+import Layout from "../components/layout/Layout";
+
+const categories = [
+  "Rings",
+  "Necklaces",
+  "Earrings",
+  "Bracelets",
+  "Pendants",
+  "Anklets",
+];
 
 const Products = () => {
-  const params = useParams();
   const dispatch = useDispatch();
-  const keyword = params.keyword;
+  const { keyword } = useParams();
   const { loading, error, products, productsCount, resultPerPage } =
     useSelector((state) => state.products);
 
   const [currentPage, setCurrentPage] = useState(1);
-
-  const [open, setOpen] = useState(false);
-  const [price, setprice] = useState([0, 50000]);
+  const [price, setPrice] = useState([0, 25000]);
+  const [category, setCategory] = useState([]);
+  const [sortBy, setSortBy] = useState("newest");
+  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     if (error) {
@@ -40,99 +52,183 @@ const Products = () => {
     // keyword, currentPage, price, category, ratings
   }, [dispatch, currentPage, error, keyword, price]);
 
-  const priceHandler = (event, newprice) => {
-    setprice(newprice);
+  const handlePriceChange = (event, newPrice) => {
+    setPrice(newPrice);
   };
 
-  const handlePageChange = (event, value) => {
-    setCurrentPage(value);
+  const handleCategoryChange = (event) => {
+    const value = event.target.value;
+    if (category.includes(value)) {
+      setCategory(category.filter((cat) => cat !== value));
+    } else {
+      setCategory([...category, value]);
+    }
   };
 
-  const toggleDrawer = (newOpen) => () => {
-    setOpen(newOpen);
+  const handleSortChange = (event) => {
+    setSortBy(event.target.value);
+  };
+
+  const clearFilters = () => {
+    setPrice([0, 50000]);
+    setCategory([]);
+    setSortBy("newest");
   };
 
   return (
-    <>
-      {loading === true ? (
-        <Loader />
-      ) : (
-        <>
-          <Metadata title="Royal Crown --Products" />
-          <Nav />
-          <div className="container-fluid main-bg">
-            <div className="container py-1">
-              <Search />
+    <Layout>
+      <Metadata title="Products | Golden Jewelry" />
+      <div className="section">
+        <div className="container">
+          {loading ? (
+            <Loader />
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              {/* Header */}
+              <div className="d-flex justify-content-between align-items-center mb-4">
+                <h1>Our Collection</h1>
+                {/* <div className="d-flex gap-3">
+                  <IconButton
+                    onClick={() => setShowFilters(!showFilters)}
+                    className="filter-toggle"
+                  >
+                    {showFilters ? <CloseIcon /> : <FilterListIcon />}
+                  </IconButton>
+                  <FormControl variant="outlined" size="small">
+                    <Select
+                      value={sortBy}
+                      onChange={handleSortChange}
+                      startAdornment={<SortIcon className="me-2" />}
+                    >
+                      <MenuItem value="newest">Newest First</MenuItem>
+                      <MenuItem value="price_low">Price: Low to High</MenuItem>
+                      <MenuItem value="price_high">Price: High to Low</MenuItem>
+                      <MenuItem value="popular">Most Popular</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div> */}
+              </div>
+              {loading && <Loader />}
 
-              <div className="white-card my-3">
-                <h3 className="py-2 font-2">All products</h3>
-                <div className="row g-4">
-                  {products &&
-                    products.map((vel, ind) => (
-                      <ProductsCard key={ind} props={vel} />
-                    ))}
-                </div>
-                <div className="py-3">
+              <div className="row">
+                {/* Filters */}
+                {showFilters && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="col-lg-3"
+                  >
+                    <div className="product-filters">
+                      <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h3>Filters</h3>
+                        <button className="btn btn-link" onClick={clearFilters}>
+                          Clear All
+                        </button>
+                      </div>
+
+                      {/* Price Filter */}
+                      <div className="filter-section px-2">
+                        <h4>Price Range</h4>
+                        <Slider
+                          value={price}
+                          onChange={handlePriceChange}
+                          valueLabelDisplay="auto"
+                          min={0}
+                          max={50000}
+                          sx={{
+                            color: "#bb5d3c",
+                            "& .MuiSlider-thumb": {
+                              backgroundColor: "#bb5d3c",
+                            },
+                          }}
+                        />
+                      </div>
+
+                      {/* Category Filter */}
+                      <div className="filter-section">
+                        <h4>Categories</h4>
+                        <ul className="category-list">
+                          {categories.map((cat) => (
+                            <li key={cat}>
+                              <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    checked={category.includes(cat)}
+                                    onChange={() =>
+                                      handleCategoryChange({
+                                        target: { value: cat },
+                                      })
+                                    }
+                                    sx={{
+                                      color: "#bb5d3c",
+                                      "&.Mui-checked": {
+                                        color: "#bb5d3c",
+                                      },
+                                    }}
+                                  />
+                                }
+                                label={cat}
+                              />
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Products Grid */}
+                <div className={`col-lg-${showFilters ? "9" : "12"}`}>
+                  <div className="products-grid">
+                    {products && products.length > 0 ? (
+                      products.map((product) => (
+                        <ProductsCard key={product._id} product={product} />
+                      ))
+                    ) : (
+                      <div className="text-center py-5">
+                        <h3>No products found</h3>
+                        <p>Try adjusting your filters or search criteria</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Pagination */}
                   {resultPerPage && productsCount > resultPerPage && (
-                    <div className="paginationBox">
-                      <Pagination
-                        page={currentPage}
-                        count={Math.ceil(productsCount / resultPerPage)}
-                        onChange={handlePageChange}
-                        showFirstButton
-                        showLastButton
-                      />
+                    <div className="d-flex justify-content-center mt-5">
+                      <nav>
+                        <ul className="pagination">
+                          {[
+                            ...Array(Math.ceil(productsCount / resultPerPage)),
+                          ].map((_, index) => (
+                            <li
+                              key={index + 1}
+                              className={`page-item ${
+                                currentPage === index + 1 ? "active" : ""
+                              }`}
+                            >
+                              <button
+                                className="page-link"
+                                onClick={() => setCurrentPage(index + 1)}
+                              >
+                                {index + 1}
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </nav>
                     </div>
                   )}
                 </div>
               </div>
-            </div>
-          </div>
-          <Drawer open={open} anchor={"right"} onClose={toggleDrawer(false)}>
-            <div className="container-fluid filters bg-light">
-              <div className="text-end">
-                <Tooltip title="Close">
-                  <IconButton
-                    type="button"
-                    sx={{ p: "10px" }}
-                    aria-label="search"
-                    onClick={toggleDrawer(false)}
-                  >
-                    <CloseRoundedIcon />
-                  </IconButton>
-                </Tooltip>
-              </div>
-              <div className="container">
-                <div className="row g-3">
-                  <div className="col-12 white-card p-2">
-                    <h5 className="text-center m-0 ">Filters</h5>
-                  </div>
-                  <div className="col-12 white-card p-2">
-                    <h5 className="text-center m-0 ">Price Range</h5>
-                    <div className="px-3">
-                      <Slider
-                        getAriaLabel={() => "Price Range"}
-                        value={price}
-                        onChangeCommitted={priceHandler}
-                        valueLabelDisplay="auto"
-                        min={0}
-                        max={50000}
-                      />
-                    </div>
-                  </div>
-                  {/* <div className="col-12 white-card p-2">
-                    <h5 className="text-center m-0 ">Rateing Range</h5>
-                    <div className="px-3">
-                      
-                    </div>
-                  </div> */}
-                </div>
-              </div>
-            </div>
-          </Drawer>
-        </>
-      )}
-    </>
+            </motion.div>
+          )}
+        </div>
+      </div>
+    </Layout>
   );
 };
 

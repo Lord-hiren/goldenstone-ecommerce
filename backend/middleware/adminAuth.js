@@ -1,45 +1,51 @@
 const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
+const { verifyAdminToken } = require("../utils/adminToken");
 
-const JWT_SECRET = process.env.JWT_SECRET;
-const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
-
-// Middleware to authenticate token
+// Middleware to authenticate admin token
 exports.authenticateAdminToken = (req, res, next) => {
-  const authHeader = req.headers["x-auth"];
-  const token = authHeader;
-  if (!token)
-    return res.send({ status: "error", message: "Unauthorised Access." });
-
-  const parts = token.split(":");
-  if (parts.length !== 2) {
-    return res.send({ status: "error", message: "Invalid token format." });
-  }
-
-  const iv = Buffer.from(parts[0], "hex");
-  const encryptedToken = parts[1];
-
-  const decipher = crypto.createDecipheriv(
-    "aes-256-cbc",
-    Buffer.from(ENCRYPTION_KEY, "utf8"),
-    iv
-  );
-  let decryptedToken;
   try {
-    decryptedToken = decipher.update(encryptedToken, "hex", "utf8");
-    decryptedToken += decipher.final("utf8");
-  } catch (err) {
-    return res.send({ status: "error", message: "Invalid Token" });
-  }
+    let token;
 
-  jwt.verify(
-    decryptedToken,
-    JWT_SECRET,
-    { algorithms: ["HS256"] },
-    (err, user) => {
-      if (err) return res.send({ status: "error", message: "Invalid Token" });
-      req.user = user;
-      next();
+    // Check for token in cookie first
+    if (req.cookies.adminToken) {
+      token = req.cookies.adminToken;
     }
-  );
+    // Fallback to Authorization header
+    else if (req.headers.authorization?.startsWith("Bearer ")) {
+      token = req.headers.authorization.split(" ")[1];
+    }
+
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: "Please login to access this resource",
+      });
+    }
+
+    // Verify token
+    const decoded = verifyAdminToken(token);
+    if (!decoded) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid or expired token",
+      });
+    }
+
+    // Check if user is admin
+    if (decoded.role !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied. Admin only resource.",
+      });
+    }
+
+    // Add user info to request
+    req.user = decoded;
+    next();
+  } catch (error) {
+    return res.status(401).json({
+      success: false,
+      message: "Authentication failed",
+    });
+  }
 };

@@ -8,21 +8,28 @@ const {
   updateUserRole,
   deleteUser,
   adminLogin,
+  adminLogout,
+  getAdminProfile,
 } = require("../controllers/userController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
+const { authenticateAdminToken } = require("../middleware/adminAuth");
 
 const router = express.Router();
 
 router.route("/googlelogin").post(googleLogin);
 router.route("/logout").get(logout);
 router.route("/me").post(getUserDetails);
-router.route("/admin/users").get(getAllUser);
+// Admin routes
+router.route("/admin/login").post(adminLogin);
+router.route("/admin/logout").post(authenticateAdminToken, adminLogout);
+router.route("/admin/profile").get(authenticateAdminToken, getAdminProfile);
+
+// Protected admin routes
+router.route("/admin/users").get(authenticateAdminToken, getAllUser);
 router
   .route("/admin/user/:id")
-  .get(getSingleUser)
-  .put(updateUserRole)
-  .delete(deleteUser);
-
-router.route("/admin/login").post(adminLogin);
+  .get(authenticateAdminToken, getSingleUser)
+  .put(authenticateAdminToken, updateUserRole)
+  .delete(authenticateAdminToken, deleteUser);
 
 module.exports = router;

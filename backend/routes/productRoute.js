@@ -10,6 +10,8 @@ const {
   deleteReview,
   getAdminProducts,
 } = require("../controllers/productController");
+const { authenticateAdminToken } = require("../middleware/adminAuth");
+const upload = require("../middleware/fileUpload");
 
 const router = express.Router();
 
@@ -22,11 +24,15 @@ router.route("/reviews").get(getProductReviews);
 router.route("/review").put(createProductReview);
 router.route("/reviews").delete(deleteReview);
 
-// Admin routes
-router.route("/admin/products").get(getAdminProducts);
-
-router.route("/admin/product/new").post(createProduct);
-
-router.route("/admin/product/:id").put(updateProduct).delete(deleteProduct);
+// Admin routes (protected)
+// Admin routes (protected)
+router.route("/admin/products").get(authenticateAdminToken, getAdminProducts);
+router
+  .route("/admin/product/new")
+  .post(authenticateAdminToken, upload.array("images", 5), createProduct);
+router
+  .route("/admin/product/:id")
+  .put(authenticateAdminToken, upload.array("images", 5), updateProduct)
+  .delete(authenticateAdminToken, deleteProduct);
 
 module.exports = router;

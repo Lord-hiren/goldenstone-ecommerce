@@ -1,0 +1,325 @@
+@import "../theme.scss";
+
+.order-details-page {
+  padding: 2rem 0;
+  min-height: 80vh;
+  background: linear-gradient(to bottom, rgba($light, 0.5), rgba($light, 0.8));
+}
+
+// Order Header
+.order-header {
+  text-align: center;
+  margin-bottom: 3rem;
+
+  h1 {
+    color: $secondary;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  .order-date {
+    color: rgba($secondary, 0.6);
+    font-size: 1.1rem;
+  }
+}
+
+// Order Status Tracker
+.order-status-tracker {
+  max-width: 800px;
+  margin: 0 auto 4rem;
+  padding: 2rem;
+  background: $white;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba($black, 0.05);
+
+  .status-line {
+    height: 4px;
+    background: rgba($primary, 0.2);
+    border-radius: 2px;
+    position: relative;
+    margin: 2rem 0;
+
+    .status-progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: $primary;
+      border-radius: 2px;
+      transition: width 0.6s ease-in-out;
+    }
+  }
+
+  .status-points {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    margin-top: -2.5rem;
+  }
+
+  .status-point {
+    text-align: center;
+    position: relative;
+    width: 80px;
+
+    .status-icon {
+      width: 50px;
+      height: 50px;
+      background: $white;
+      border: 3px solid rgba($primary, 0.2);
+      border-radius: 50%;
+      @include flex-center;
+      margin: 0 auto 1rem;
+      color: rgba($primary, 0.4);
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    p {
+      font-size: 0.9rem;
+      color: rgba($secondary, 0.6);
+      margin: 0;
+      transition: all 0.3s ease;
+    }
+
+    &.active {
+      .status-icon {
+        background: $primary;
+        border-color: $primary;
+        color: $white;
+        transform: scale(1.1);
+      }
+
+      p {
+        color: $primary;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+// Order Items
+.order-items {
+  @include card-shadow;
+  border-radius: 10px;
+  overflow: hidden;
+
+  .card-header {
+    background: $white;
+    border-bottom: 1px solid rgba($secondary, 0.1);
+    padding: 1.5rem;
+
+    h3 {
+      margin: 0;
+      color: $secondary;
+      font-size: 1.3rem;
+    }
+  }
+
+  .order-item {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba($secondary, 0.1);
+    transition: $transition-base;
+
+    &:hover {
+      background: rgba($light, 0.5);
+    }
+
+    .item-image {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-right: 1.5rem;
+    }
+
+    .item-details {
+      flex: 1;
+
+      h4 {
+        margin: 0 0 0.5rem;
+        font-size: 1.1rem;
+        color: $secondary;
+      }
+
+      .item-price {
+        color: rgba($secondary, 0.6);
+        margin: 0;
+      }
+    }
+
+    .item-total {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: $primary;
+    }
+  }
+}
+
+// Order Summary
+.order-summary {
+  @include card-shadow;
+  border-radius: 10px;
+  overflow: hidden;
+
+  .card-header {
+    background: $white;
+    border-bottom: 1px solid rgba($secondary, 0.1);
+    padding: 1.5rem;
+
+    h3 {
+      margin: 0;
+      color: $secondary;
+      font-size: 1.3rem;
+    }
+  }
+
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba($secondary, 0.1);
+
+    span {
+      &:first-child {
+        color: rgba($secondary, 0.6);
+      }
+      &:last-child {
+        font-weight: 500;
+        color: $secondary;
+      }
+    }
+
+    &.total {
+      background: rgba($light, 0.5);
+      border-bottom: none;
+
+      span {
+        font-weight: 600;
+        font-size: 1.2rem;
+
+        &:last-child {
+          color: $primary;
+        }
+      }
+    }
+  }
+}
+
+// Shipping Info
+.shipping-info {
+  @include card-shadow;
+  border-radius: 10px;
+  overflow: hidden;
+
+  .card-header {
+    background: $white;
+    border-bottom: 1px solid rgba($secondary, 0.1);
+    padding: 1.5rem;
+
+    h3 {
+      margin: 0;
+      color: $secondary;
+      font-size: 1.3rem;
+    }
+  }
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba($secondary, 0.1);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    svg {
+      color: $primary;
+      margin-right: 1rem;
+      font-size: 1.2rem;
+    }
+
+    span {
+      color: $secondary;
+    }
+  }
+}
+
+// Loading & Error States
+.loading-container {
+  @include flex-center;
+  min-height: 60vh;
+
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba($primary, 0.3);
+    border-radius: 50%;
+    border-top-color: $primary;
+    animation: spin 1s linear infinite;
+  }
+}
+
+.error-container {
+  @include flex-center;
+  flex-direction: column;
+  min-height: 60vh;
+  text-align: center;
+
+  h2 {
+    color: $secondary;
+    margin-bottom: 1.5rem;
+  }
+}
+
+// Responsive Design
+@media (max-width: $breakpoint-lg) {
+  .order-status-tracker {
+    padding: 1.5rem;
+  }
+
+  .status-point {
+    .status-icon {
+      width: 40px;
+      height: 40px;
+      font-size: 1rem;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .order-item {
+    flex-direction: column;
+    text-align: center;
+
+    .item-image {
+      margin: 0 0 1rem;
+    }
+
+    .item-details {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .order-header {
+    h1 {
+      font-size: 1.8rem;
+    }
+  }
+
+  .status-points {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+
+  .status-line {
+    display: none;
+  }
+}

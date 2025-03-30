@@ -10,7 +10,7 @@ exports.googleLogin = catchAsyncErrors(async (req, res, next) => {
 
   if (!email || !name || !profile_pic) {
     return next(
-      new ErrorHander("Please provide email, name, and profile picture", 400)
+      new ErrorHander("Please provide email, name, and profile picture")
     );
   }
 
@@ -28,8 +28,10 @@ exports.googleLogin = catchAsyncErrors(async (req, res, next) => {
     });
   }
 
+  console.log(user);
+
   // Log in the user
-  sendToken(user, 200, res);
+  sendToken(user, res);
 });
 
 // Logout User
@@ -39,7 +41,7 @@ exports.logout = catchAsyncErrors(async (req, res, next) => {
     httpOnly: true,
   });
 
-  res.status(200).json({
+  res.json({
     success: true,
     message: "Logged Out",
   });
@@ -50,16 +52,16 @@ exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
   const { userid } = req.body;
 
   if (!userid) {
-    return next(new ErrorHander("User ID is required", 400));
+    return next(new ErrorHander("User ID is required"));
   }
 
   const user = await User.findById(userid);
 
   if (!user) {
-    return next(new ErrorHander("User not found", 404));
+    return next(new ErrorHander("User not found"));
   }
 
-  res.status(200).json({
+  res.json({
     success: true,
     user,
   });
@@ -69,7 +71,7 @@ exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
 exports.getAllUser = catchAsyncErrors(async (req, res, next) => {
   const users = await User.find();
 
-  res.status(200).json({
+  res.json({
     success: true,
     users,
   });
@@ -85,7 +87,7 @@ exports.getSingleUser = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
-  res.status(200).json({
+  res.json({
     success: true,
     user,
   });
@@ -97,14 +99,22 @@ exports.updateUserRole = catchAsyncErrors(async (req, res, next) => {
     role: req.body.role,
   };
 
-  await User.findByIdAndUpdate(req.params.id, newUserData, {
+  const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
     new: true,
     runValidators: true,
     useFindAndModify: false,
   });
 
-  res.status(200).json({
+  if (!user) {
+    return next(
+      new ErrorHander(`User does not exist with Id: ${req.params.id}`)
+    );
+  }
+
+  res.json({
     success: true,
+    message: "User role updated successfully",
+    user,
   });
 });
 
@@ -114,15 +124,15 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
 
   if (!user) {
     return next(
-      new ErrorHander(`User does not exist with Id: ${req.params.id}`, 400)
+      new ErrorHander(`User does not exist with Id: ${req.params.id}`)
     );
   }
 
   await User.deleteOne({ _id: req.params.id });
 
-  res.status(200).json({
+  res.json({
     success: true,
-    message: "User Deleted Successfully",
+    message: "User deleted successfully",
   });
 });
 
@@ -130,30 +140,57 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
 exports.adminLogin = catchAsyncErrors(async (req, res, next) => {
   const { userName, password } = req.body;
 
-  if (!userName) {
-    return next(new ErrorHander("Username is required", 400));
-  }
-
-  if (!password) {
-    return next(new ErrorHander("Password is required", 400));
+  if (!userName || !password) {
+    return next(new ErrorHander("Please provide both username and password"));
   }
 
   const Username = process.env.ADMIN_USER_NAME;
   const Password = process.env.ADMIN_PASSWORD;
 
-  if (userName !== Username) {
-    return next(new ErrorHander("Please provide valid username", 401));
+  if (userName !== Username || password !== Password) {
+    return next(new ErrorHander("Invalid username or password"));
   }
 
-  if (password !== Password) {
-    return next(new ErrorHander("Please provide valid password", 403));
-  }
+  const user = { id: 1, name: userName, role: "admin" };
+  const token = await generateAdminToken(user);
 
-  const adminToken = await generateAdminToken([
-    { user_id: 1, user_name: userName },
-  ]);
+  // Set cookie options
+  const cookieOptions = {
+    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  };
 
-  if (adminToken) {
-    return res.status(200).json({ success: true, token: adminToken });
-  }
+  // Set token in cookie
+  res.cookie("adminToken", token, cookieOptions);
+
+  res.json({
+    success: true,
+    token,
+    user,
+  });
+});
+
+// ADMIN LOGOUT
+exports.adminLogout = catchAsyncErrors(async (req, res, next) => {
+  res.cookie("adminToken", null, {
+    expires: new Date(Date.now()),
+    httpOnly: true,
+  });
+
+  res.json({
+    success: true,
+    message: "Logged out successfully",
+  });
+});
+
+// Get Admin Profile
+exports.getAdminProfile = catchAsyncErrors(async (req, res, next) => {
+  const user = req.user;
+
+  res.json({
+    success: true,
+    user,
+  });
 });
