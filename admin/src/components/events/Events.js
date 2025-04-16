@@ -2,8 +2,15 @@ import React, { useState, useEffect } from "react";
 import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const Events = () => {
+  const token = Cookies.get("adminToken");
+  const config = {
+    headers: {
+      "X-AUTH": token,
+    },
+  };
   const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -24,8 +31,10 @@ const Events = () => {
   const fetchEvents = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `${process.env.REACT_APP_API}/admin/events`
+      const response = await axios.post(
+        `${process.env.REACT_APP_API}/admin/events`,
+        "",
+        config
       );
       if (response.data.success) {
         setEvents(response.data.events || []);
@@ -75,7 +84,8 @@ const Events = () => {
       } else {
         response = await axios.post(
           `${process.env.REACT_APP_API}/admin/event/new`,
-          formData
+          formData,
+          config
         );
       }
 

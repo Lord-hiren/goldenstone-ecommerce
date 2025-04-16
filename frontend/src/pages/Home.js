@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
@@ -37,6 +37,8 @@ const Home = () => {
   const navigate = useNavigate();
   const { loading, error, products } = useSelector((state) => state.products);
 
+  const [trandingProducts, setTrandingProducts] = useState([]);
+
   useEffect(() => {
     if (error) {
       toast.error(error);
@@ -45,10 +47,17 @@ const Home = () => {
     dispatch(getProduct());
   }, [dispatch, error]);
 
+  useEffect(() => {
+    if (products !== undefined) {
+      const filteredProcut = products?.filter(
+        (element) => element.trending === "Y"
+      );
+      setTrandingProducts(filteredProcut);
+    }
+  }, [products]);
+
   // fatching data
-  const fatchUser = (creRes) => {
-    console.log(creRes);
-  };
+  const fatchUser = (creRes) => {};
   const onhandelclick = (e) => {
     e.preventDefault();
     toast.success("hello world");
@@ -356,7 +365,8 @@ const Home = () => {
                 <div className="loading-spinner"></div>
               </div>
             ) : (
-              products?.map((product) => (
+              trandingProducts &&
+              trandingProducts?.map((product) => (
                 <motion.div
                   key={product._id}
                   className="col-lg-3 col-md-4 col-sm-6"

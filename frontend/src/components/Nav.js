@@ -124,24 +124,22 @@ const Nav = () => {
     } else {
       // autoLogin();
     }
-  }, []);
+  }, [token, user]);
 
-  // const autoLogin = () => {
-  //   // google auto login
-  //   useGoogleOneTapLogin({
-  //     onSuccess: (credentialResponse) => {
-  //       // fatchUser(credentialResponse);
-  //       const userData = jwtDecode(credentialResponse.credential);
-  //       dispatch(googleLogin(userData.email, userData.name, userData.picture));
-  //       const token = cookies.token;
-  //       const decoded = jwtDecode(token);
-  //       dispatch(loadUser(decoded.id));
-  //     },
-  //     onError: () => {
-  //       toast.error("Login Failed");
-  //     },
-  //   });
-  // };
+  // // google auto login
+  // useGoogleOneTapLogin({
+  //   onSuccess: (credentialResponse) => {
+  //     // fatchUser(credentialResponse);
+  //     const userData = jwtDecode(credentialResponse.credential);
+  //     dispatch(googleLogin(userData.email, userData.name, userData.picture));
+  //     const token = cookies.token;
+  //     const decoded = jwtDecode(token);
+  //     dispatch(loadUser(decoded.id));
+  //   },
+  //   onError: () => {
+  //     toast.error("Login Failed");
+  //   },
+  // });
 
   const surchProduct = (e, value) => {
     e.preventDefault();

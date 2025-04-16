@@ -54,7 +54,7 @@ const ProductsCard = ({ product }) => {
     >
       <div className="product-image-container">
         <img
-          src={product.images[0]?.url || "/placeholder.png"}
+          src={product.images[0]?.url}
           alt={product.name}
           className="product-image"
         />
@@ -92,7 +92,7 @@ const ProductsCard = ({ product }) => {
             <span className="original-price">${product.price.toFixed(2)}</span>
           )}
           <span className="final-price">
-            $
+            ₹
             {(product.price - (product.price * product.discount) / 100).toFixed(
               2
             )}

@@ -100,7 +100,7 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
       category,
       stock: Number(stock),
       discount: discount ? Number(discount) : 0,
-      trending: trending === "true",
+      trending: trending === "Y" ? "Y" : "N",
     };
 
     if (req.files && req.files.length > 0) {

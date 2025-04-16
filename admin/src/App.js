@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Login from "./components/auth/Login";
-import ProtectedRoute from "./components/auth/ProtectedRoute";
 import AdminLayout from "./components/layout/AdminLayout";
 import "./App.scss";
 import Dashboard from "./components/dashboard/Dashboard";
@@ -18,7 +17,6 @@ import Events from "./components/events/Events";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  console.log("App.js: isAuthenticated =", isAuthenticated);
   return (
     <Router>
       <React.Suspense
@@ -37,22 +35,21 @@ const App = () => {
           />
 
           {/* Protected Routes */}
-          <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
-            <Route
-              element={<AdminLayout setIsAuthenticated={setIsAuthenticated} />}
-            >
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/users" element={<Users />} />
-              <Route path="/orders" element={<Orders />} />
-              <Route path="/events" element={<Events />} />
+          <Route
+            element={<AdminLayout setIsAuthenticated={setIsAuthenticated} />}
+          >
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/events" element={<Events />} />
 
-              {/* Redirect root to dashboard if authenticated */}
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            {/* Redirect root to dashboard if authenticated */}
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
-              {/* Catch all route */}
-              <Route path="*" element={<Navigate to="/dashboard" replace />} />
-            </Route>
+            {/* Catch all route */}
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Route>
         </Routes>
       </React.Suspense>

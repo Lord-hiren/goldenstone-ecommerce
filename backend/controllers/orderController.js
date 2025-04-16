@@ -13,6 +13,8 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
     taxPrice,
     shippingPrice,
     totalPrice,
+    user_id,
+    discount,
   } = req.body;
 
   const order = await Order.create({
@@ -24,7 +26,8 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
     shippingPrice,
     totalPrice,
     paidAt: Date.now(),
-    user: req.user._id,
+    user: user_id,
+    discount,
   });
 
   res.json({
@@ -35,10 +38,7 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
 
 // Get Single Order
 exports.getSingleOrder = catchAsyncErrors(async (req, res, next) => {
-  const order = await Order.findById(req.params.id).populate(
-    "user",
-    "name email"
-  );
+  const order = await Order.findById({ _id: req.params.id });
 
   if (!order) {
     return next(new ErrorHander("Order not found"));
@@ -52,11 +52,25 @@ exports.getSingleOrder = catchAsyncErrors(async (req, res, next) => {
 
 // Get Logged In User Orders
 exports.myOrders = catchAsyncErrors(async (req, res, next) => {
-  const orders = await Order.find({ user: req.user._id });
+  const orders = await Order.find({ user: req.body.id });
 
   res.json({
     success: true,
     orders,
+  });
+});
+
+// Get Single Order for admin
+exports.getSingleOrderAdmin = catchAsyncErrors(async (req, res, next) => {
+  const order = await Order.findById({ _id: req.params.id });
+
+  if (!order) {
+    return next(new ErrorHander("Order not found"));
+  }
+
+  res.json({
+    success: true,
+    order,
   });
 });
 
@@ -84,19 +98,36 @@ exports.updateOrder = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHander("Order not found"));
   }
 
-  if (order.orderStatus === "Delivered") {
-    return next(new ErrorHander("Order has already been delivered"));
-  }
+  const currentStatus = order.orderStatus;
+  const newStatus = req.body.orderStatus;
 
-  if (req.body.orderStatus === "Shipped") {
-    order.orderItems.forEach(async (item) => {
-      await updateStock(item.product, item.quantity);
+  // Define allowed status transitions
+  const statusFlow = {
+    Processing: ["Packed", "Canceled"],
+    Packed: ["Shipped"],
+    Shipped: ["Delivered"],
+    Delivered: [],
+    Canceled: [], // Canceled orders cannot be updated
+  };
+
+  // Check if the transition is valid
+  if (!statusFlow[currentStatus].includes(newStatus)) {
+    return res.json({
+      succes: false,
+      message: `Invalid status transition from ${currentStatus} to ${newStatus}`,
     });
   }
 
-  order.orderStatus = req.body.orderStatus;
+  // If moving to "Shipped", update stock
+  if (newStatus === "Shipped") {
+    for (const item of order.orderItems) {
+      await updateStock(item.product, item.quantity);
+    }
+  }
 
-  if (req.body.orderStatus === "Delivered") {
+  // Set new status and timestamps
+  order.orderStatus = newStatus;
+  if (newStatus === "Delivered") {
     order.deliveredAt = Date.now();
   }
 

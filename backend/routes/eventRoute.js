@@ -15,7 +15,7 @@ const router = express.Router();
 router.route("/active").get(getActiveEvents);
 
 // Admin routes - protected with admin authentication
-router.route("/admin/events").get(authenticateAdminToken, getAllEvents);
+router.route("/admin/events").post(authenticateAdminToken, getAllEvents);
 router.route("/admin/event/new").post(authenticateAdminToken, createEvent);
 router
   .route("/admin/event/:id")

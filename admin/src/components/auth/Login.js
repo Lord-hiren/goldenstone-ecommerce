@@ -1,14 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const Login = ({ setIsAuthenticated }) => {
+  const token = Cookies.get("adminToken");
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,12 +38,13 @@ const Login = ({ setIsAuthenticated }) => {
         formData
       );
 
-      if (data.success) {
+      if (data.success && data.token) {
+        // Save token in cookies
+        Cookies.set("adminToken", data.token, { expires: 7, path: "/" });
+
         toast.success("Welcome to Admin Panel!");
-        console.log("Login.js: Before setIsAuthenticated(true)");
         setIsAuthenticated(true);
-        console.log("Login.js: After setIsAuthenticated(true)");
-        console.log("Login.js: Before navigate(/dashboard)");
+
         navigate("/dashboard");
       }
     } catch (error) {

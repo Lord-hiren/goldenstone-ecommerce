@@ -28,8 +28,6 @@ exports.googleLogin = catchAsyncErrors(async (req, res, next) => {
     });
   }
 
-  console.log(user);
-
   // Log in the user
   sendToken(user, res);
 });

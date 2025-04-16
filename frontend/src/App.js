@@ -20,7 +20,6 @@ import About from "./pages/AboutUs";
 // import Contact from "./pages/";
 // import Categories from "./pages/Categories";
 import Shipping from "./pages/Shipping";
-import OrderConfirm from "./pages/OrderConfirm";
 import OrderPlace from "./pages/OrderPlace";
 import Error from "./pages/Error";
 
@@ -58,30 +57,9 @@ function App() {
             {/* <Route path="/categories" element={<Categories />} /> */}
 
             {/* Protected Routes */}
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/shipping"
-              element={
-                <ProtectedRoute>
-                  <Shipping />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/order/confirm"
-              element={
-                <ProtectedRoute>
-                  <OrderConfirm />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/shipping" element={<Shipping />} />
+
             <Route
               path="/order/:id"
               element={

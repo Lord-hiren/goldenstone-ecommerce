@@ -25,11 +25,7 @@ router.route("/admin/logout").post(authenticateAdminToken, adminLogout);
 router.route("/admin/profile").get(authenticateAdminToken, getAdminProfile);
 
 // Protected admin routes
-router.route("/admin/users").get(authenticateAdminToken, getAllUser);
-router
-  .route("/admin/user/:id")
-  .get(authenticateAdminToken, getSingleUser)
-  .put(authenticateAdminToken, updateUserRole)
-  .delete(authenticateAdminToken, deleteUser);
+router.route("/admin/users").post(authenticateAdminToken, getAllUser);
+router.route("/admin/user/:id").post(authenticateAdminToken, deleteUser);
 
 module.exports = router;

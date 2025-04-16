@@ -3,8 +3,15 @@ import { Table, Button, Modal, Form, Spinner, Badge } from "react-bootstrap";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const Orders = () => {
+  const token = Cookies.get("adminToken");
+  const config = {
+    headers: {
+      "X-AUTH": token,
+    },
+  };
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -18,8 +25,10 @@ const Orders = () => {
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `${process.env.REACT_APP_API}/admin/orders`
+      const response = await axios.post(
+        `${process.env.REACT_APP_API}/admin/orders`,
+        "",
+        config
       );
       if (response.data.success) {
         setOrders(response.data.orders || []);
@@ -35,8 +44,10 @@ const Orders = () => {
 
   const handleView = async (order) => {
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API}/admin/order/${order._id}`
+      const response = await axios.post(
+        `${process.env.REACT_APP_API}/admin/get/order/${order._id}`,
+        "",
+        config
       );
       if (response.data.success) {
         setCurrentOrder(response.data.order);
@@ -51,8 +62,10 @@ const Orders = () => {
 
   const handleEdit = async (order) => {
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API}/admin/order/${order._id}`
+      const response = await axios.post(
+        `${process.env.REACT_APP_API}/admin/get/order/${order._id}`,
+        "",
+        config
       );
       if (response.data.success) {
         setCurrentOrder(response.data.order);
@@ -68,9 +81,10 @@ const Orders = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(
-        `${process.env.REACT_APP_API}/admin/order/${currentOrder._id}`,
-        currentOrder
+      const response = await axios.post(
+        `${process.env.REACT_APP_API}/admin/update/order/${currentOrder._id}`,
+        currentOrder,
+        config
       );
       if (response.data.success) {
         toast.success(response.data.message || "Order updated successfully");
@@ -165,13 +179,13 @@ const Orders = () => {
                 >
                   <FaEdit />
                 </Button>
-                <Button
+                {/* <Button
                   variant="outline-danger"
                   size="sm"
                   onClick={() => handleDelete(order._id)}
                 >
                   <FaTrash />
-                </Button>
+                </Button> */}
               </td>
             </tr>
           ))}
@@ -192,12 +206,12 @@ const Orders = () => {
             <div>
               <div className="mb-4">
                 <h5>Customer Information</h5>
-                <p className="mb-1">
+                {/* <p className="mb-1">
                   <strong>Name:</strong> {currentOrder.user?.name}
                 </p>
                 <p className="mb-1">
                   <strong>Email:</strong> {currentOrder.user?.email}
-                </p>
+                </p> */}
                 <p className="mb-1">
                   <strong>Phone:</strong> {currentOrder.shippingInfo?.phoneNo}
                 </p>
@@ -258,13 +272,19 @@ const Orders = () => {
                       <td colSpan="3" className="text-end">
                         <strong>Subtotal:</strong>
                       </td>
-                      <td>${currentOrder.itemsPrice?.toFixed(2)}</td>
+                      <td>${currentOrder.itemsPrice.toFixed(2)}</td>
                     </tr>
                     <tr>
                       <td colSpan="3" className="text-end">
                         <strong>Tax:</strong>
                       </td>
-                      <td>${currentOrder.taxPrice?.toFixed(2)}</td>
+                      <td>+ ${currentOrder.taxPrice?.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                      <td colSpan="3" className="text-end">
+                        <strong>Discount:</strong>
+                      </td>
+                      <td>- ${currentOrder.discount?.toFixed(2)}</td>
                     </tr>
                     <tr>
                       <td colSpan="3" className="text-end">
@@ -277,7 +297,9 @@ const Orders = () => {
                         <strong>Total:</strong>
                       </td>
                       <td>
-                        <strong>${currentOrder.totalPrice?.toFixed(2)}</strong>
+                        <strong>
+                          ${currentOrder.totalPrice?.toFixed(2)}/-
+                        </strong>
                       </td>
                     </tr>
                   </tfoot>
@@ -308,6 +330,7 @@ const Orders = () => {
                   }
                 >
                   <option value="Processing">Processing</option>
+                  <option value="Packed">Processing</option>
                   <option value="Shipped">Shipped</option>
                   <option value="Delivered">Delivered</option>
                   <option value="Cancelled">Cancelled</option>

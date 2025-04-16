@@ -3,8 +3,15 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const Dashboard = () => {
+  const token = Cookies.get("adminToken");
+  const config = {
+    headers: {
+      "X-AUTH": token,
+    },
+  };
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
     totalSales: 0,
@@ -26,10 +33,26 @@ const Dashboard = () => {
     try {
       setLoading(true);
       const [statsRes, salesRes, ordersRes, stockRes] = await Promise.all([
-        axios.get(`${process.env.REACT_APP_API}/admin/dashboard/stats`),
-        axios.get(`${process.env.REACT_APP_API}/admin/dashboard/sales-chart`),
-        axios.get(`${process.env.REACT_APP_API}/admin/dashboard/orders-chart`),
-        axios.get(`${process.env.REACT_APP_API}/admin/dashboard/stock-status`),
+        axios.post(
+          `${process.env.REACT_APP_API}/admin/dashboard/stats`,
+          "",
+          config
+        ),
+        axios.post(
+          `${process.env.REACT_APP_API}/admin/dashboard/sales-chart`,
+          "",
+          config
+        ),
+        axios.post(
+          `${process.env.REACT_APP_API}/admin/dashboard/orders-chart`,
+          "",
+          config
+        ),
+        axios.post(
+          `${process.env.REACT_APP_API}/admin/dashboard/stock-status`,
+          "",
+          config
+        ),
       ]);
 
       if (statsRes.data.success) {
@@ -168,94 +191,87 @@ const Dashboard = () => {
   }
 
   return (
-    // <div className="row g-4 py-4 fade-in">
-    //   {/* Stats Cards */}
-    //   <div className="col-md-3">
-    //     <div className="dashboard-card">
-    //       <h6 className="card-label">Total Sales</h6>
-    //       <div className="card-value">
-    //         ₹{stats.totalSales.toLocaleString()}
-    //       </div>
-    //       <div
-    //         className={`text-${
-    //           stats.salesGrowth >= 0 ? "success" : "danger"
-    //         } mt-2`}
-    //       >
-    //         <small>
-    //           {stats.salesGrowth >= 0 ? "↑" : "↓"}{" "}
-    //           {Math.abs(stats.salesGrowth).toFixed(1)}% from last month
-    //         </small>
-    //       </div>
-    //     </div>
-    //   </div>
-    //   <div className="col-md-3">
-    //     <div className="dashboard-card">
-    //       <h6 className="card-label">Total Orders</h6>
-    //       <div className="card-value">
-    //         {stats.totalOrders.toLocaleString()}
-    //       </div>
-    //       <div
-    //         className={`text-${
-    //           stats.orderGrowth >= 0 ? "success" : "danger"
-    //         } mt-2`}
-    //       >
-    //         <small>
-    //           {stats.orderGrowth >= 0 ? "↑" : "↓"}{" "}
-    //           {Math.abs(stats.orderGrowth).toFixed(1)}% from last month
-    //         </small>
-    //       </div>
-    //     </div>
-    //   </div>
-    //   <div className="col-md-3">
-    //     <div className="dashboard-card">
-    //       <h6 className="card-label">Total Products</h6>
-    //       <div className="card-value">
-    //         {stats.totalProducts.toLocaleString()}
-    //       </div>
-    //       <div className="text-danger mt-2">
-    //         <small>{stats.outOfStock} out of stock</small>
-    //       </div>
-    //     </div>
-    //   </div>
-    //   <div className="col-md-3">
-    //     <div className="dashboard-card">
-    //       <h6 className="card-label">Total Users</h6>
-    //       <div className="card-value">
-    //         {stats.totalUsers.toLocaleString()}
-    //       </div>
-    //       <div className="text-info mt-2">
-    //         <small>Active users</small>
-    //       </div>
-    //     </div>
-    //   </div>
+    <div className="row g-4 py-4 fade-in">
+      {/* Stats Cards */}
+      <div className="col-md-3">
+        <div className="dashboard-card">
+          <h6 className="card-label">Total Sales</h6>
+          <div className="card-value">₹{stats.totalSales.toLocaleString()}</div>
+          <div
+            className={`text-${
+              stats.salesGrowth >= 0 ? "success" : "danger"
+            } mt-2`}
+          >
+            <small>
+              {stats.salesGrowth >= 0 ? "↑" : "↓"}{" "}
+              {Math.abs(stats.salesGrowth).toFixed(1)}% from last month
+            </small>
+          </div>
+        </div>
+      </div>
+      <div className="col-md-3">
+        <div className="dashboard-card">
+          <h6 className="card-label">Total Orders</h6>
+          <div className="card-value">{stats.totalOrders.toLocaleString()}</div>
+          <div
+            className={`text-${
+              stats.orderGrowth >= 0 ? "success" : "danger"
+            } mt-2`}
+          >
+            <small>
+              {stats.orderGrowth >= 0 ? "↑" : "↓"}{" "}
+              {Math.abs(stats.orderGrowth).toFixed(1)}% from last month
+            </small>
+          </div>
+        </div>
+      </div>
+      <div className="col-md-3">
+        <div className="dashboard-card">
+          <h6 className="card-label">Total Products</h6>
+          <div className="card-value">
+            {stats.totalProducts.toLocaleString()}
+          </div>
+          <div className="text-danger mt-2">
+            <small>{stats.outOfStock} out of stock</small>
+          </div>
+        </div>
+      </div>
+      <div className="col-md-3">
+        <div className="dashboard-card">
+          <h6 className="card-label">Total Users</h6>
+          <div className="card-value">{stats.totalUsers.toLocaleString()}</div>
+          <div className="text-info mt-2">
+            <small>Active users</small>
+          </div>
+        </div>
+      </div>
 
-    //   {/* Charts */}
-    //   <div className="col-md-8">
-    //     <div className="chart-container">
-    //       <HighchartsReact
-    //         highcharts={Highcharts}
-    //         options={salesChartOptions}
-    //       />
-    //     </div>
-    //   </div>
-    //   <div className="col-md-4">
-    //     <div className="chart-container">
-    //       <HighchartsReact
-    //         highcharts={Highcharts}
-    //         options={stockChartOptions}
-    //       />
-    //     </div>
-    //   </div>
-    //   <div className="col-12">
-    //     <div className="chart-container">
-    //       <HighchartsReact
-    //         highcharts={Highcharts}
-    //         options={ordersChartOptions}
-    //       />
-    //     </div>
-    //   </div>
-    // </div>
-    <div>Dashboard</div>
+      {/* Charts */}
+      <div className="col-md-8">
+        <div className="chart-container">
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={salesChartOptions}
+          />
+        </div>
+      </div>
+      <div className="col-md-4">
+        <div className="chart-container">
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={stockChartOptions}
+          />
+        </div>
+      </div>
+      <div className="col-12">
+        <div className="chart-container">
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={ordersChartOptions}
+          />
+        </div>
+      </div>
+    </div>
   );
 };
 

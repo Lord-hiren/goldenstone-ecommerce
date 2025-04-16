@@ -4,16 +4,10 @@ const { verifyAdminToken } = require("../utils/adminToken");
 // Middleware to authenticate admin token
 exports.authenticateAdminToken = (req, res, next) => {
   try {
-    let token;
+    const authHeader = req.headers["x-auth"];
+    const token = authHeader;
 
-    // Check for token in cookie first
-    if (req.cookies.adminToken) {
-      token = req.cookies.adminToken;
-    }
-    // Fallback to Authorization header
-    else if (req.headers.authorization?.startsWith("Bearer ")) {
-      token = req.headers.authorization.split(" ")[1];
-    }
+    console.log(req.headers);
 
     if (!token) {
       return res.status(401).json({

@@ -26,13 +26,16 @@ router.route("/reviews").delete(deleteReview);
 
 // Admin routes (protected)
 // Admin routes (protected)
-router.route("/admin/products").get(authenticateAdminToken, getAdminProducts);
+router.route("/admin/products").post(authenticateAdminToken, getAdminProducts);
 router
   .route("/admin/product/new")
   .post(authenticateAdminToken, upload.array("images", 5), createProduct);
 router
   .route("/admin/product/:id")
-  .put(authenticateAdminToken, upload.array("images", 5), updateProduct)
+  .post(authenticateAdminToken, upload.array("images", 5), updateProduct)
   .delete(authenticateAdminToken, deleteProduct);
 
+router
+  .route("/admin/product/delete/:id")
+  .post(authenticateAdminToken, deleteProduct);
 module.exports = router;
