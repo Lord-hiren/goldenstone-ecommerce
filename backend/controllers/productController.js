@@ -12,7 +12,7 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     if (req.files && req.files.length > 0) {
       images = req.files.map((file) => ({
         public_id: file.filename,
-        url: `http://localhost:4000/images/productimg/${file.filename}`,
+        url: `${process.env.FRONTEND_URL}/images/productimg/${file.filename}`,
       }));
     }
 
@@ -108,7 +108,7 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
       // Add new images
       updatedData.images = req.files.map((file) => ({
         public_id: file.filename,
-        url: `http://localhost:4000/images/productimg/${file.filename}`,
+        url: `${process.env.FRONTEND_URL}/images/productimg/${file.filename}`,
       }));
     }
 

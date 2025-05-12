@@ -128,7 +128,7 @@ const Products = () => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
         const response = await axios.post(
-          `${process.env.REACT_APP_API}/admin/product/${id}`,
+          `${process.env.REACT_APP_API}/admin/product/delete/${id}`,
           "",
           config
         );
