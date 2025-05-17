@@ -57,28 +57,28 @@ app.use("/api/v1", event);
 app.use("/api", paymentRoutes);
 
 // Serve frontend in production
-// if (process.env.NODE_ENV === "production") {
-//   // Serve frontend
-//   app.use(express.static(path.join(__dirname, "../frontend/build")));
-//   app.get("/", (req, res) => {
-//     res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
-//   });
+if (process.env.NODE_ENV === "PRODUCTION") {
+  // Serve frontend
+  app.use(express.static(path.join(__dirname, "../frontend/build")));
+  app.get("/", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
+  });
 
-//   // Serve admin panel
-//   app.use("/admin", express.static(path.join(__dirname, "../admin/build")));
-//   app.get("/admin/*", (req, res) => {
-//     res.sendFile(path.resolve(__dirname, "../admin/build/index.html"));
-//   });
+  // Serve admin panel
+  app.use("/admin", express.static(path.join(__dirname, "../admin/build")));
+  app.get("/admin/*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../admin/build/index.html"));
+  });
 
-//   // Handle other routes
-//   app.get("*", (req, res) => {
-//     if (req.url.startsWith("/admin")) {
-//       res.sendFile(path.resolve(__dirname, "../admin/build/index.html"));
-//     } else {
-//       res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
-//     }
-//   });
-// }
+  // // Handle other routes
+  // app.get("*", (req, res) => {
+  //   if (req.url.startsWith("/admin")) {
+  //     res.sendFile(path.resolve(__dirname, "../admin/build/index.html"));
+  //   } else {
+  //     res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
+  //   }
+  // });
+}
 
 // Middleware for Errors
 app.use(errorMiddleware);

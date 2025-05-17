@@ -15,7 +15,7 @@ connectDatabase();
 
 const port = process.env.PORT;
 
-if (process.env.NODE_ENV === "PRODUCTION") {
+if (process.env.NODE_ENV !== "PRODUCTION") {
   const options = {
     key: fs.readFileSync(
       "/etc/letsencrypt/live/royalcrownjewellery.in/privkey.pem"
