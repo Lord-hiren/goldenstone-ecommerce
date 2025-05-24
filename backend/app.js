@@ -53,6 +53,9 @@ app.use("/api/v1/admin/dashboard", dashboard);
 app.use("/api/v1", event);
 app.use("/api", paymentRoutes);
 
+app.get("/", (req, res) => {
+  res.json({ status: "success" });
+});
 // Serve frontend in production
 if (process.env.NODE_ENV === "PRODUCTION") {
   // Serve frontend
