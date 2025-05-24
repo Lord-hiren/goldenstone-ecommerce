@@ -15,23 +15,9 @@ connectDatabase();
 
 const port = process.env.PORT;
 
-if (process.env.NODE_ENV !== "PRODUCTION") {
-  const options = {
-    key: fs.readFileSync(
-      "/etc/letsencrypt/live/royalcrownjewellery.in/privkey.pem"
-    ),
-    cert: fs.readFileSync(
-      "/etc/letsencrypt/live/royalcrownjewellery.in/fullchain.pem"
-    ),
-  };
-  https.createServer(options, app).listen(port, () => {
-    console.log("Server is running on https://royalcrownjewellery.in:4000");
-  });
-} else {
-  const server = app.listen(port, () => {
-    console.log(`Server is working on http://localhost:${port}`);
-  });
-}
+const server = app.listen(port, () => {
+  console.log(`Server is working on http://localhost:${port}`);
+});
 
 // Unhandled Promise Rejection
 process.on("unhandledRejection", (err) => {
