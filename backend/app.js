@@ -19,18 +19,32 @@ if (!require("fs").existsSync(productImgDir)) {
 }
 
 // Configure CORS for frontend and admin panel
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:3005",
+  "https://admin.royalcrownjewellery.in",
+  "https://royalcrownjewellery.in",
+  "https://www.royalcrownjewellery.in",
+];
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "http://localhost:3005",
-      "https://admin.royalcrownjewellery.in",
-      "https://royalcrownjewellery.in",
-      "https://www.royalcrownjewellery.in",
-    ],
+    origin: function (origin, callback) {
+      // allow requests with no origin (like mobile apps or curl)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true, // <-- REQUIRED if you're using cookies or auth headers
     optionsSuccessStatus: 200,
   })
 );
+
+// Preflight support
+app.options("*", cors({ origin: allowedOrigins, credentials: true }));
 
 // Enable pre-flight requests for all routes
 app.options("*", cors());
