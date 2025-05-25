@@ -21,7 +21,13 @@ if (!require("fs").existsSync(productImgDir)) {
 // Configure CORS for frontend and admin panel
 app.use(
   cors({
-    origin: "*",
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:3005",
+      "https://admin.royalcrownjewellery.in",
+      "https://royalcrownjewellery.in",
+      "https://www.royalcrownjewellery.in",
+    ],
     optionsSuccessStatus: 200,
   })
 );
