@@ -21,7 +21,7 @@ if (!require("fs").existsSync(productImgDir)) {
 // Configure CORS for frontend and admin panel
 app.use(
   cors({
-    origin: "*/*",
+    origin: "*",
     optionsSuccessStatus: 200,
   })
 );
