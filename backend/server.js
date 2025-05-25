@@ -14,10 +14,12 @@ process.on("uncaughtException", (err) => {
 // Connect to database
 connectDatabase();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 const NODE_ENV = process.env.NODE_ENV || "development";
 
 let server;
+
+console.log(PORT);
 
 if (NODE_ENV === "PRODUCTION") {
   // Path to Let's Encrypt SSL certificates
