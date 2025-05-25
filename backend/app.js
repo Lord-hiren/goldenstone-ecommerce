@@ -21,16 +21,8 @@ if (!require("fs").existsSync(productImgDir)) {
 // Configure CORS for frontend and admin panel
 app.use(
   cors({
-    origin: "*",
-    credentials: true, // Important for cookies
+    origin: "*/*",
     optionsSuccessStatus: 200,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "x-auth",
-      "Access-Control-Allow-Credentials",
-    ],
   })
 );
 
