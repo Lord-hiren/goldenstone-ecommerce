@@ -92,60 +92,47 @@ const Shipping = () => {
         amount,
       });
 
-      // Place order
-      const orderplace = {
-        ...orderData,
-        paymentInfo: {
-          id: "Pay_123",
-          status: "success",
+      const options = {
+        key: process.env.REACT_APP_RAZORPAY_API_KEY,
+        amount: amount * 100,
+        currency: "INR",
+        name: "Royal Crown",
+        description: "Payment",
+        order_id: order.id,
+        handler: function (response) {
+          localStorage.removeItem("cartItems");
+          const paymentData = {
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+            order_id: order.id,
+          };
+
+          // Place order
+          const orderplace = {
+            ...orderData,
+            paymentInfo: {
+              id: response.razorpay_payment_id,
+              status: "success",
+            },
+          };
+
+          dispatch(createOrder(orderplace));
+          toast.success("Order placed successfully");
+          navigate("/");
+        },
+        theme: {
+          color: "#832729",
+        },
+        modal: {
+          ondismiss: function () {
+            toast.error("Payment process was canceled.");
+            setIsProcessing(false);
+          },
         },
       };
 
-      dispatch(createOrder(orderplace));
-      toast.success("Order placed successfully");
-      navigate("/");
-
-      // const options = {
-      //   key: process.env.REACT_APP_RAZORPAY_API_KEY,
-      //   amount: amount * 100,
-      //   currency: "INR",
-      //   name: "Royal Crown",
-      //   description: "Payment",
-      //   order_id: order.id,
-      //   handler: function (response) {
-      //     localStorage.removeItem("cartItems");
-      //     const paymentData = {
-      //       razorpay_payment_id: response.razorpay_payment_id,
-      //       razorpay_signature: response.razorpay_signature,
-      //       order_id: order.id,
-      //     };
-
-      //     // Place order
-      //     const orderplace = {
-      //       ...orderData,
-      //       paymentInfo: {
-      //         id: response.razorpay_payment_id,
-      //         status: "success",
-      //       },
-      //     };
-
-      //     dispatch(createOrder(orderplace));
-      //     toast.success("Order placed successfully");
-      //     navigate("/");
-      //   },
-      //   theme: {
-      //     color: "#832729",
-      //   },
-      //   modal: {
-      //     ondismiss: function () {
-      //       toast.error("Payment process was canceled.");
-      //       setIsProcessing(false);
-      //     },
-      //   },
-      // };
-
-      // const razor = new window.Razorpay(options);
-      // razor.open();
+      const razor = new window.Razorpay(options);
+      razor.open();
     } catch (error) {
       toast.error("Payment failed, please try again.");
       setIsProcessing(false);

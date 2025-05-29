@@ -910,3 +910,23 @@ textarea.form-control {
     transform: rotate(1turn);
   }
 }
+
+@keyframes updown {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.updown {
+  display: inline-block;
+  animation: updown 2s ease-in-out infinite;
+}
+
+.h111 {
+  font-size: 10rem;
+  word-spacing: 1rem;
+}

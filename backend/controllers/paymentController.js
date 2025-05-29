@@ -6,7 +6,7 @@ const Razorpay = require("razorpay");
 exports.checkout = catchAsyncErrors(async (req, res) => {
   const instance = new Razorpay({
     key_id: process.env.RAZORPAY_API_KEY,
-    key_secret: process.env.RAZORPAY_APT_SECRET,
+    key_secret: process.env.RAZORPAY_API_SECRET,
   });
   const rawAmount = req.body.amount;
 
@@ -31,7 +31,7 @@ exports.paymentVerification = async (req, res) => {
   const body = razorpay_order_id + "|" + razorpay_payment_id;
 
   const expectedSignature = crypto
-    .createHmac("sha256", process.env.RAZORPAY_APT_SECRET)
+    .createHmac("sha256", process.env.RAZORPAY_API_SECRET)
     .update(body)
     .digest("hex");
   const isAuthentic = expectedSignature === razorpay_signature;

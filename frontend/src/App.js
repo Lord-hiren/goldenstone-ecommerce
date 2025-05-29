@@ -29,6 +29,11 @@ import ProtectedRoute from "./components/route/ProtectedRoute";
 // Styles
 import "./App.scss";
 import Footer from "./components/Footer";
+import PrivacyPolicy from "./userService/Privacy";
+import TermsAndConditions from "./userService/TermsAndConditions";
+import RefundPolicy from "./userService/RefundPolicy";
+import ShippingPolicy from "./userService/ShippingPolicy";
+import ContactUs from "./userService/ContactUs";
 
 function App() {
   useEffect(() => {
@@ -76,6 +81,11 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsAndConditions />} />
+            <Route path="/refund-policy" element={<RefundPolicy />} />
+            <Route path="/shipping-policy" element={<ShippingPolicy />} />
+            <Route path="/contact-us" element={<ContactUs />} />
 
             {/* 404 Route */}
             <Route path="*" element={<Error />} />

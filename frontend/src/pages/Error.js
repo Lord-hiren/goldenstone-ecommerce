@@ -17,10 +17,10 @@ const Error = () => {
     <>
       <Metadata title="Royal Crown --Error" />
       <Nav />
-      <div className="main">
-        <h1 className="h1">
+      <div className="main text-center pt-5" style={{ marginTop: "10rem" }}>
+        <h1 className="h111">
           4
-          <span>
+          <span className="updown mx-5">
             <FontAwesomeIcon icon={faGhost} />
           </span>
           4

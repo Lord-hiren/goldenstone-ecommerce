@@ -1,31 +1,25 @@
 import React from "react";
-import { Container, Typography, Box, Divider } from "@mui/material";
-import Metadata from "../components/Metadata";
-import Nav from "../components/Nav";
+import { Container, Typography, Box } from "@mui/material";
 
 const RefundPolicy = () => {
   return (
-    <>
-      <Metadata title="Royal Crown --RefundPolicy" />
-      <Nav />
-      <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
-        <Box sx={{ textAlign: "center", mb: 4 }}>
-          <Typography variant="h4" component="h1" gutterBottom>
-            Refund Policy
-          </Typography>
-        </Box>
+    <Container maxWidth="md" sx={{ py: 5, mt: 10 }}>
+      <Typography variant="h3" gutterBottom sx={{ textAlign: "center" }}>
+        Refund Policy
+      </Typography>
+      <Typography variant="subtitle2" gutterBottom>
+        Last updated: 01-04-2025
+      </Typography>
 
-        <Divider sx={{ mb: 4 }} />
-
+      <Box sx={{ mt: 4 }}>
         <Typography variant="h6" component="h2" gutterBottom>
           1. Eligibility for Refunds
         </Typography>
         <Typography paragraph>
           We accept refunds for items that arrive damaged or defective. To be
           eligible for a refund, you must contact us within{" "}
-          <strong>7 days</strong>
-          of receiving your order and provide proof of damage (photos or a
-          description).
+          <strong>7 days</strong> of receiving your order and provide proof of
+          damage (photos or a description).
         </Typography>
 
         <Typography variant="h6" component="h2" gutterBottom>
@@ -68,12 +62,12 @@ const RefundPolicy = () => {
         </Typography>
         <Typography paragraph>
           For any questions or concerns regarding our refund policy, please
-          contact us at royalcrown2525@gmail.com.
+          contact us at{" "}
+          <a href="mailto:royalcrown2525@gmail.com">royalcrown2525@gmail.com</a>
+          .
         </Typography>
-
-        <Divider sx={{ mt: 4 }} />
-      </Container>
-    </>
+      </Box>
+    </Container>
   );
 };
 
