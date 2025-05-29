@@ -95,7 +95,7 @@ const Footer = () => {
                   <Link to="/about">About Us</Link>
                 </li>
                 <li>
-                  <Link to="/contact">Contact</Link>
+                  <Link to="/contact-us">Contact</Link>
                 </li>
                 {/* <li>
                   <Link to="/blog">Blog</Link>
@@ -114,16 +114,16 @@ const Footer = () => {
               <h4>Customer Service</h4>
               <ul className="footer-links">
                 <li>
-                  <Link to="/shipping">Shipping Info</Link>
+                  <Link to="/shipping-policy">Shipping Info</Link>
                 </li>
                 <li>
-                  <Link to="/returns">Returns & Exchanges</Link>
+                  <Link to="/refund-policy">Returns & Exchanges</Link>
                 </li>
                 <li>
-                  <Link to="/faq">FAQ</Link>
+                  <Link to="/privacy-policy">Privacy Policy</Link>
                 </li>
                 <li>
-                  <Link to="/size-guide">Size Guide</Link>
+                  <Link to="/terms">Terms & Conditions</Link>
                 </li>
               </ul>
             </motion.div>
